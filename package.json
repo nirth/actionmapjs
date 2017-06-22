@@ -1,0 +1,22 @@
+{
+  "name": "matejs",
+  "version": "0.0.1",
+  "description": "Mate Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nirth/matejs.git"
+  },
+  "keywords": [
+    "fp"
+  ],
+  "author": "David Sergey <me@davidsergey.com> (https://davidsergey.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nirth/matejs/issues"
+  },
+  "homepage": "https://github.com/nirth/matejs#readme"
+}
