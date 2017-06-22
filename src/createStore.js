@@ -16,6 +16,7 @@ class Store {
   }
 
   dispatch(event) {
+    const t = getTime();
     const previousState = this.state;
     const eventMap = this.eventMap;
 
@@ -30,6 +31,7 @@ class Store {
     );
 
     this.pushState(nextState);
+    console.log('Time:', getTimer() - t);
   }
 
   pushState(state) {

@@ -18,10 +18,6 @@ const eventMap = [
   {key: 'counter', guard: allowEventType('one'), mapper: addOne},
   {key: 'counter', guard: allowEventType('two'), mapper: addTwo},
   {key: 'counter', guard: allowEventType('add'), mapper: justAdd},
-  // {key: 'user', mapper: [
-  //   {key: 'name', guard: allowEventType('name'), mapper: () => 'new name'},
-  //   {key: 'age', guard: allowEventType('age'), mapper: () => 'new age'},
-  // ]},
 ];
 
 const store = createStore(initialState, eventMap);
