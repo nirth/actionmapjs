@@ -1,5 +1,5 @@
 
-import {allowEventType, createEventMap} from '../src';
+import {allowEventType, createStore} from '../src';
 
 console.log('allowEventType:works', allowEventType('type1')({type: 'type1'}));
 
@@ -23,18 +23,18 @@ const initialState = {
   frame: 0,
 };
 
-const map = [
-  ['counter', allowEventType('one'), addOne],
-  ['counter', allowEventType('two'), addTwo],
-  ['counter', allowEventType('add'), justAdd]
+const eventMap = [
+  {key: 'counter', guard: allowEventType('one'), mapper: addOne},
+  {key: 'counter', guard: allowEventType('two'), mapper: addTwo},
+  {key: 'counter', guard: allowEventType('add'), mapper: justAdd},
 ];
 
-const eventMap = createEventMap(initialState, map);
+const store = createStore(initialState, eventMap);
 
-eventMap.dispatch({type: 'one'})
-eventMap.dispatch({type: 'one'});
-eventMap.dispatch({type: 'two'});
-eventMap.dispatch({type: 'one'});
-eventMap.dispatch({type: 'add', payload: 3});
+store.dispatch({type: 'one'})
+store.dispatch({type: 'one'});
+store.dispatch({type: 'two'});
+store.dispatch({type: 'one'});
+store.dispatch({type: 'add', payload: 3});
 
-console.log(eventMap.getState());
+console.log(store.getState());

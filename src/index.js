@@ -4,5 +4,5 @@ export {
 } from './utils';
 
 export {
-  createEventMap
-} from './eventMap';
+  createStore
+} from './createStore';
