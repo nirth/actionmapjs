@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable';
 
 export const filterRelevantMappers = (state, eventMap, event) => eventMap
-  .map(({key, guard, mapper}) => {
+  .map(([key, guard, mapper]) => {
     const isGuardFunction = typeof guard === 'function';
     const shouldExecute = isGuardFunction ? guard(event) : guard;
     return [key, shouldExecute, mapper];
@@ -12,7 +12,7 @@ export const filterRelevantMappers = (state, eventMap, event) => eventMap
 export const applyTransformations = (previousState, mappers, event) => {
   mappers.reduce(
     (state, [key, mapper]) => {
-      const previousValue = state.get(key)
+
     }
   )
 }
