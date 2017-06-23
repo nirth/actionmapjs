@@ -9,6 +9,14 @@ export const filterRelevantMappers = (state, eventMap, event) => eventMap
   .filter(([key, predicate, mapper]) => predicate)
   .map(([key, predicate, mapper]) => [key, mapper]);
 
+export const applyTransformations = (previousState, mappers, event) => {
+  mappers.reduce(
+    (state, [key, mapper]) => {
+      const previousValue = state.get(key)
+    }
+  )
+}
+
 class Store {
   constructor(state, eventMap) {
     this.history = List.of(Map(state));
@@ -16,22 +24,24 @@ class Store {
   }
 
   dispatch(event) {
-    const t = getTime();
+    const t = Date.now();
     const previousState = this.state;
     const eventMap = this.eventMap;
 
     const relevantMappers = filterRelevantMappers(previousState, eventMap, event);
     const nextState = relevantMappers.reduce(
       (state, [key, mapper]) => {
-        const previousValue = state.get(key);
-        const nextValue = mapper(previousValue, event.payload);
-        return state.set(key, nextValue);
+        if (typeof mapper === 'function') {
+          return state.set(key, mapper(event.payload, event, state));
+        }
+
+        return state;
       },
       previousState
     );
 
     this.pushState(nextState);
-    console.log('Time:', getTimer() - t);
+    console.log('Time:', Date.now() - t);
   }
 
   pushState(state) {

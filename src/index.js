@@ -1,6 +1,7 @@
 
 export {
   allowEventType,
+  createSimpleEvent,
 } from './utils';
 
 export {
