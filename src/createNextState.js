@@ -26,7 +26,7 @@ export const processEventMap = (map, state, event) => map
     state
   );
 
-export const createNextState = (eventMap, state) => (event) => {
+export const createNextState = (eventMap, state, path = []) => (event) => {
   const relevantMappers = eventMap
     // Evaluate guards to actual conditions
     .map(([key, guard, mapper]) => [key, evaluateGuard(guard, event), mapper])
@@ -37,8 +37,8 @@ export const createNextState = (eventMap, state) => (event) => {
     .map(([key, mapper]) => {
       if (typeof mapper === 'function') {
         return [key, mapper];
-      }else if (Array.isArray(mapper)) {
-        return [key, createNextState(mapper, state[key])];
+      } else if (Array.isArray(mapper)) {
+        return [key, createNextState(mapper, state[key], path.concat([key]))];
       }
 
       throw new Error(
