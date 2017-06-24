@@ -1,25 +1,9 @@
-import {List, Map} from 'immutable';
 
-export const filterRelevantMappers = (state, eventMap, event) => eventMap
-  .map(([key, guard, mapper]) => {
-    const isGuardFunction = typeof guard === 'function';
-    const shouldExecute = isGuardFunction ? guard(event) : guard;
-    return [key, shouldExecute, mapper];
-  })
-  .filter(([key, predicate, mapper]) => predicate)
-  .map(([key, predicate, mapper]) => [key, mapper]);
-
-export const applyTransformations = (previousState, mappers, event) => {
-  mappers.reduce(
-    (state, [key, mapper]) => {
-
-    }
-  )
-}
+import {createNextStore} from './createNextStore';
 
 class Store {
   constructor(state, eventMap) {
-    this.history = List.of(Map(state));
+    this.history = [state];
     this.eventMap = eventMap;
   }
 
@@ -50,7 +34,7 @@ class Store {
   }
 
   get state() {
-    return this.history.last();
+    return this.history
   }
 }
 
