@@ -33,6 +33,8 @@
     "sinon": "^2.3.5"
   },
   "dependencies": {
-    "immutable": "^3.8.1"
+    "immutable": "^3.8.1",
+    "ramda": "^0.24.1",
+    "rxjs": "^5.4.1"
   }
 }
