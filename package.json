@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --require babel-polyfill",
-    "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --require babel-polyfill --reporter mocha-junit-reporter"
+    "ci": "JUNIT_REPORT_PATH=$CIRCLE_ARTIFACTS/report.xml node_modules/.bin/mocha ./**/*.spec.js --require babel-register --require babel-polyfill --reporter mocha-junit-reporter"
   },
   "repository": {
     "type": "git",
