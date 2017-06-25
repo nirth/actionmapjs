@@ -9,7 +9,7 @@ The reason I'm playing around with this library is because I think that metaphor
 
 Consider following example:
 
-```
+```es6
 // Selector, in real life we would memoize it
 const selectSum = (state) => state.sum;
 // Creating simple event with type and payload
