@@ -30,7 +30,9 @@
     "chai": "^4.0.2",
     "dirty-chai": "^2.0.0",
     "mocha": "^3.4.2",
-    "sinon": "^2.3.5"
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0",
+    "sinon-chai-in-order": "^0.1.0"
   },
   "dependencies": {
     "immutable": "^3.8.1",
