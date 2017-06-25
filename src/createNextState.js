@@ -1,3 +1,4 @@
+import {curry} from 'ramda';
 
 const setState = (state, key, value) => Object.assign({}, state, {[key]: value});
 

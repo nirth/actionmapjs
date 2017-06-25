@@ -7,7 +7,8 @@ import {createNextState, processEventMap} from './createNextState';
 chai.use(dirtyChai);
 
 const initializeApp = () => true;
-const udpateName = ({payload: name}) => name;
+const updateName = ({payload: name}) => name;
+const updateAge = ({payload: age}) => age;
 const updateFirstName = ({payload: firstName}) => firstName;
 const updateLastName = ({payload: lastName}) => lastName;
 
@@ -33,8 +34,8 @@ const oneLevelDeepFixtures = () => ({
   eventMap: [
     ['initialized', allowEventType('initialize'), () => true],
     ['user', true, [
-      ['name', allowEventType('updateName'), ({payload}) => payload],
-      ['age', allowEventType('updateAge'), ({payload}) => payload],
+      ['name', allowEventType('updateName'), updateName],
+      ['age', allowEventType('updateAge'), updateAge],
     ]],
   ],
 });
@@ -57,7 +58,7 @@ const twoLevelDeepFixtures = () => ({
         ['firstName', allowEventType('updateFirstName'), updateFirstName],
         ['lastName', allowEventType('updateLastName'), updateLastName],
       ]],
-      ['age', allowEventType('updateAge'), ({payload}) => payload],
+      ['age', allowEventType('updateAge'), updateAge],
     ]],
   ],
 });
@@ -71,42 +72,42 @@ describe('createNextState should', () => {
   it('create next state for simple (flat) event map', () => {
     const {initialState, eventMap} = flatFixtures();
 
-    const stateOne = createNextState(eventMap, initialState)({type: 'initialize', payload: true});
+    const stateOne = createNextState(eventMap, initialState, [], {type: 'initialize', payload: true});
     expect(stateOne).to.deep.equal({initialized: true, numTimesRefreshed: 0});
     
-    const stateTwo = createNextState(eventMap, stateOne)({type: 'refresh', payload: 0});
+    const stateTwo = createNextState(eventMap, stateOne, [], {type: 'refresh', payload: 0});
     expect(stateTwo).to.deep.equal({initialized: true, numTimesRefreshed: 1});
     
-    const stateThree = createNextState(eventMap, stateTwo)({type: 'refresh', payload: 1});
+    const stateThree = createNextState(eventMap, stateTwo, [], {type: 'refresh', payload: 1});
     expect(stateThree).to.deep.equal({initialized: true, numTimesRefreshed: 2});
   });
 
   it('create next state for one level deep event map', () => {
     const {initialState, eventMap} = oneLevelDeepFixtures();
 
-    const stateOne = createNextState(eventMap, initialState)({type: 'initialize', payload: true});
+    const stateOne = createNextState(eventMap, initialState, [], {type: 'initialize', payload: true});
     expect(stateOne).to.deep.equal({initialized: true, user: {name: null, age: null}});
 
-    const stateTwo = createNextState(eventMap, stateOne)({type: 'updateName', payload: 'Malika'});
+    const stateTwo = createNextState(eventMap, stateOne, [], {type: 'updateName', payload: 'Malika'});
     expect(stateTwo).to.deep.equal({initialized: true, user: {name: 'Malika', age: null}});
 
-    const stateThree = createNextState(eventMap, stateTwo)({type: 'updateAge', payload: 30});
+    const stateThree = createNextState(eventMap, stateTwo, [], {type: 'updateAge', payload: 30});
     expect(stateThree).to.deep.equal({initialized: true, user: {name: 'Malika', age: 30}});
   });
 
   it('create next state for two level deep event map', () => {
     const {initialState, eventMap} = twoLevelDeepFixtures();
 
-    const stateOne = createNextState(eventMap, initialState)({type: 'initialize', payload: true});
+    const stateOne = createNextState(eventMap, initialState, [], {type: 'initialize', payload: true});
     expect(stateOne).to.deep.equal({initialized: true, user: {name: {firstName: null, lastName: null}, age: null}});
 
-    const stateTwo = createNextState(eventMap, stateOne)({type: 'updateFirstName', payload: 'Malika'});
+    const stateTwo = createNextState(eventMap, stateOne, [], {type: 'updateFirstName', payload: 'Malika'});
     expect(stateTwo).to.deep.equal({initialized: true, user: {name: {firstName: 'Malika', lastName: null}, age: null}});
 
-    const stateThree = createNextState(eventMap, stateTwo)({type: 'updateLastName', payload: 'Favre'});
+    const stateThree = createNextState(eventMap, stateTwo, [], {type: 'updateLastName', payload: 'Favre'});
     expect(stateThree).to.deep.equal({initialized: true, user: {name: {firstName: 'Malika', lastName: 'Favre'}, age: null}});
 
-    const stateFour = createNextState(eventMap, stateThree)({type: 'updateAge', payload: 30});
+    const stateFour = createNextState(eventMap, stateThree, [], {type: 'updateAge', payload: 30});
     expect(stateFour).to.deep.equal({initialized: true, user: {name: {firstName: 'Malika', lastName: 'Favre'}, age: 30}});
   });
 });
