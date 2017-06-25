@@ -23,7 +23,7 @@ export const processEventMap = (map, state, event) => map
   .reduce(
     (state, [key, mapper]) => {
       const previousValue = getState(state, key);
-      const nextValue = mapper(event, state, previousValue);
+      const nextValue = mapper(event, state, previousValue, key);
       return setState(state, key, nextValue);
     },
     state
