@@ -1,40 +1,58 @@
 
-import {createNextStore} from './createNextStore';
+import {List} from 'immutable';
+import {Observable} from 'rxjs';
+import {createNextState} from './createNextState';
+
+const initializeObserver = () => {
+  let _observer = null;
+  Observable.create((observer) => {
+    _observer = observer;
+  });
+
+  return _observer;
+};
 
 class Store {
-  constructor(state, eventMap) {
-    this.history = [state];
+  constructor(eventMap, state) {
+    // this.observer = initializeObserver();
+    // this.observer = observer;
+    this.history = List.of(state);
     this.eventMap = eventMap;
   }
 
   dispatch(event) {
-    const t = Date.now();
     const previousState = this.state;
     const eventMap = this.eventMap;
 
-    const relevantMappers = filterRelevantMappers(previousState, eventMap, event);
-    const nextState = relevantMappers.reduce(
-      (state, [key, mapper]) => {
-        if (typeof mapper === 'function') {
-          return state.set(key, mapper(event.payload, event, state));
-        }
-
-        return state;
-      },
-      previousState
-    );
+    const nextState = createNextState(eventMap, previousState, [], event);
 
     this.pushState(nextState);
-    console.log('Time:', Date.now() - t);
+  
+    // observer.onNext(nextState);
+
+    // Do I really need it? Handy in testing, but doesn't seem all that useful otherwise.
+    return Promise.resolve(nextState);
+    // return nextState;
   }
+
+  // subscribe(onNext) {
+  //   observer.subscribe(onNext, this.onError, this.onCompleted);
+  // }
+
+  // onError(error) {
+  //   console.error(`Store, something went wront: ${error}`);
+  // }
+
+  // onCompleted() {
+  //   console.debug('Store completed for some reason');
+  // }
 
   pushState(state) {
     this.history = this.history.push(state);
-    return this.history;
   }
 
   get state() {
-    return this.history
+    return this.history.last();
   }
 }
 
