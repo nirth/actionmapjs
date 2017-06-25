@@ -5,3 +5,4 @@ machine:
 test:
   override:
     - npm run ci
+    - mv $CIRCLE_TEST_REPORTS/junit.xml
