@@ -1,51 +1,30 @@
 
 import {List} from 'immutable';
-import {Observable} from 'rxjs';
+import {Subject} from 'rxjs';
 import {createNextState} from './createNextState';
-
-const initializeObserver = () => {
-  let _observer = null;
-  Observable.create((observer) => {
-    _observer = observer;
-  });
-
-  return _observer;
-};
 
 class Store {
   constructor(eventMap, state) {
-    // this.observer = initializeObserver();
-    // this.observer = observer;
-    this.history = List.of(state);
-    this.eventMap = eventMap;
+    this.publisher = new Subject()
+
+    this.history = List.of(state)
+    this.eventMap = eventMap
   }
 
   dispatch(event) {
     const previousState = this.state;
     const eventMap = this.eventMap;
 
-    const nextState = createNextState(eventMap, previousState, [], event);
+    const nextState = createNextState(eventMap, previousState, [], event)
 
     this.pushState(nextState);
   
-    // observer.onNext(nextState);
-
-    // Do I really need it? Handy in testing, but doesn't seem all that useful otherwise.
-    return Promise.resolve(nextState);
-    // return nextState;
+    this.publisher.next(nextState);
   }
 
-  // subscribe(onNext) {
-  //   observer.subscribe(onNext, this.onError, this.onCompleted);
-  // }
-
-  // onError(error) {
-  //   console.error(`Store, something went wront: ${error}`);
-  // }
-
-  // onCompleted() {
-  //   console.debug('Store completed for some reason');
-  // }
+  subscribe(onNext) {
+    return this.publisher.subscribe(onNext)
+  }
 
   pushState(state) {
     this.history = this.history.push(state);
@@ -56,6 +35,4 @@ class Store {
   }
 }
 
-export const createStore = (initialState, eventMap) => {
-  return new Store(initialState, eventMap);
-};
+export const createStore = (eventMap, initialState) => new Store(eventMap, initialState);
