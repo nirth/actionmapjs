@@ -1,4 +1,6 @@
+import {curry} from 'ramda';
 
+const getState = (state, key) => state[key];
 const setState = (state, key, value) => Object.assign({}, state, {[key]: value});
 
 const evaluateGuard = (guard, event) => {
@@ -20,13 +22,14 @@ const evaluateGuard = (guard, event) => {
 export const processEventMap = (map, state, event) => map
   .reduce(
     (state, [key, mapper]) => {
-      const nextValue = mapper(event, state);
+      const previousValue = getState(state, key);
+      const nextValue = mapper(event, state, previousValue);
       return setState(state, key, nextValue);
     },
     state
   );
 
-export const createNextState = (eventMap, state, path = []) => (event) => {
+export const createNextState = curry((eventMap, state, path, event) => {
   const relevantMappers = eventMap
     // Evaluate guards to actual conditions
     .map(([key, guard, mapper]) => [key, evaluateGuard(guard, event), mapper])
@@ -41,11 +44,13 @@ export const createNextState = (eventMap, state, path = []) => (event) => {
         return [key, createNextState(mapper, state[key], path.concat([key]))];
       }
 
+      // This sounds like an ineternal error. Maybe instead of doing this checks,
+      // I should run event map through a validation.
       throw new Error(
-        `createNextState invalid mapper, mapper can either be a function or array,
+        `createNextState: invalid mapper, mapper can either be a function or array,
         instead received ${mapper}`
       )
     });
     
   return processEventMap(relevantMappers, state, event);
-};
+});

@@ -1,36 +1,38 @@
+import {Subject} from 'rxjs';
 
-import {allowEventType, simpleEventFactory, createStore} from '../src';
+const pub = new Subject()
 
-console.log('allowEventType:works', allowEventType('type1')({type: 'type1'}));
+const onNext = (event) => console.log('Event:', event)
 
-const initEvent = simpleEventFactory('init');
-const updateUserNameEvent = simpleEventFactory('updateName');
-const updateUserAgeEvent = simpleEventFactory('updateAge');
+const subscription = pub.subscribe(
+  onNext
+)
 
-const initialize = () => true;
-const updateUserName = (name) => name;
-const updateUserAge = (age) => age;
+pub.next(1)
+pub.next(2)
+subscription.unsubscribe()
+pub.next(3)
 
-const initialState = {
-  initialized: false,
-  user: {
-    name: null,
-    age: null,
-  },
-};
 
-const userEventMap = [
-  ['name', allowEventType('updateName'), updateUserName],
-  ['name', allowEventType('updateAge'), updateUserAge],
-];
+// import Rx from 'rxjs'
 
-const appEventMap = [
-  ['initialized', allowEventType('init'), initialize],
-  ['user', subMap, userEventMap],
-];
+// const source = Rx.Observable.create(observer => {
+//   // Yield a single value and complete
+//   observer.onNext(42);
+//   observer.onCompleted();
 
-const store = createStore(initialState, appEventMap);
+//   // Any cleanup logic might go here
+//   return () => console.log('disposed')
+// });
 
-store.dispatch(initEvent());
+// var subscription = source.subscribe(
+//   x => console.log('onNext: %s', x),
+//   e => console.log('onError: %s', e),
+//   () => console.log('onCompleted'));
 
-console.log(store.state);
+// // => onNext: 42
+// // => onCompleted
+
+// subscription.dispose();
+// // => disposed
+

@@ -1,43 +1,38 @@
 
-import {createNextStore} from './createNextStore';
+import {List} from 'immutable';
+import {Subject} from 'rxjs';
+import {createNextState} from './createNextState';
 
 class Store {
-  constructor(state, eventMap) {
-    this.history = [state];
-    this.eventMap = eventMap;
+  constructor(eventMap, state) {
+    this.publisher = new Subject()
+
+    this.history = List.of(state)
+    this.eventMap = eventMap
   }
 
   dispatch(event) {
-    const t = Date.now();
     const previousState = this.state;
     const eventMap = this.eventMap;
 
-    const relevantMappers = filterRelevantMappers(previousState, eventMap, event);
-    const nextState = relevantMappers.reduce(
-      (state, [key, mapper]) => {
-        if (typeof mapper === 'function') {
-          return state.set(key, mapper(event.payload, event, state));
-        }
-
-        return state;
-      },
-      previousState
-    );
+    const nextState = createNextState(eventMap, previousState, [], event)
 
     this.pushState(nextState);
-    console.log('Time:', Date.now() - t);
+  
+    this.publisher.next(nextState);
+  }
+
+  subscribe(onNext) {
+    return this.publisher.subscribe(onNext)
   }
 
   pushState(state) {
     this.history = this.history.push(state);
-    return this.history;
   }
 
   get state() {
-    return this.history
+    return this.history.last();
   }
 }
 
-export const createStore = (initialState, eventMap) => {
-  return new Store(initialState, eventMap);
-};
+export const createStore = (eventMap, initialState) => new Store(eventMap, initialState);
