@@ -1,5 +1,6 @@
 import {curry} from 'ramda';
 
+const getState = (state, key) => state[key];
 const setState = (state, key, value) => Object.assign({}, state, {[key]: value});
 
 const evaluateGuard = (guard, event) => {
@@ -21,7 +22,8 @@ const evaluateGuard = (guard, event) => {
 export const processEventMap = (map, state, event) => map
   .reduce(
     (state, [key, mapper]) => {
-      const nextValue = mapper(event, state);
+      const previousValue = getState(state, key);
+      const nextValue = mapper(event, state, previousValue);
       return setState(state, key, nextValue);
     },
     state
