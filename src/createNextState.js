@@ -19,11 +19,11 @@ const evaluateGuard = (guard, event) => {
   );
 }
 
-export const processEventMap = (map, state, event) => map
+const processEventMap = (map, state, event) => map
   .reduce(
     (state, [key, mapper]) => {
       const previousValue = getState(state, key);
-      const nextValue = mapper(event, state, previousValue, key);
+      const nextValue = mapper(event, previousValue, state, key);
       return setState(state, key, nextValue);
     },
     state
@@ -33,7 +33,7 @@ export const createNextState = curry((eventMap, state, path, event) => {
   const relevantMappers = eventMap
     // Evaluate guards to actual conditions
     .map(([key, guard, mapper]) => [key, evaluateGuard(guard, event), mapper])
-    // Filter items that don't satisfy guard
+    // Filter items that don't satisfy guar
     .filter(([key, predicate, mapper]) => predicate)
     // Remove predicate, since it's not needed any more
     .map(([key, predicate, mapper]) => [key, mapper])
