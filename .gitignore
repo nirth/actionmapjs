@@ -11,17 +11,15 @@ pids
 *.seed
 *.pid.lock
 
+# Build artifacts
+lib
+lib/*
+
 # Test utils
 lib-cov
 coverage
 .nyc_output
 test-results.xml
-
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
 
 # node-waf configuration
 .lock-wscript
