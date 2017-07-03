@@ -14,6 +14,7 @@ pids
 # Build artifacts
 lib
 lib/*
+lib.js
 
 # Test utils
 lib-cov
