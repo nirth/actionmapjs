@@ -142,6 +142,8 @@ describe('createStore should', () => {
     store.dispatch(updateLastName('Favre'))
     store.dispatch(updateAge(22))
 
+    // Expecting event handler to only be called twice,
+    // we are dispatch three events, but unsubscribing after second.
     expect(onNextState).inOrder
       .subsequently.calledWith({initialized: true, user: {name: {firstName: null, lastName: null}, age: null}})
       .subsequently.calledWith({initialized: true, user: {name: {firstName: null, lastName: null}, age: 32}})
