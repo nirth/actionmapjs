@@ -1,7 +1,7 @@
 {
-  "name": "eventmapjs",
-  "version": "0.1.3",
-  "description": "ActionMap.js - Front Controller library following Flux Patter",
+  "name": "matejs",
+  "version": "0.2.0",
+  "description": "Mate.js - Front Controller library following Flux Pattern",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register",
@@ -17,12 +17,12 @@
     "store",
     "front-controller"
   ],
-  "author": "David Sergey <me@davidsergey.com> (https://davidsergey.com)",
+  "author": "David Sergey Grigoryan <me@davidsergey.com> (https://davidsergey.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nirth/eventmapjs/issues"
+    "url": "https://github.com/nirth/matejs/issues"
   },
-  "homepage": "https://github.com/nirth/eventmapjs#readme",
+  "homepage": "https://github.com/nirth/matejs#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
