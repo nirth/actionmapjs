@@ -21,36 +21,36 @@ const evaluateGuard = (guard, event) => {
 
 export const processEventMap = (map, state, event) => map
   .reduce(
-    (state, [key, mapper]) => {
-      const previousValue = getState(state, key);
-      const nextValue = mapper(event, state, previousValue, key);
-      return setState(state, key, nextValue);
+    (state, [key, transformer]) => {
+      const previousSubState = getState(state, key);
+      const nextSubState = transformer(event, state, previousSubState);
+      return setState(state, key, nextSubState);
     },
     state
   );
 
 export const createNextState = curry((eventMap, state, path, event) => {
-  const relevantMappers = eventMap
+  const relevantTransformers = eventMap
     // Evaluate guards to actual conditions
-    .map(([key, guard, mapper]) => [key, evaluateGuard(guard, event), mapper])
+    .map(([key, guard, transformer]) => [key, evaluateGuard(guard, event), transformer])
     // Filter items that don't satisfy guard
-    .filter(([key, predicate, mapper]) => predicate)
+    .filter(([key, predicate, transformer]) => predicate)
     // Remove predicate, since it's not needed any more
-    .map(([key, predicate, mapper]) => [key, mapper])
-    .map(([key, mapper]) => {
-      if (typeof mapper === 'function') {
-        return [key, mapper];
-      } else if (Array.isArray(mapper)) {
-        return [key, createNextState(mapper, state[key], path.concat([key]))];
+    .map(([key, predicate, transformer]) => [key, transformer])
+    .map(([key, transformer]) => {
+      if (typeof transformer === 'function') {
+        return [key, transformer];
+      } else if (Array.isArray(transformer)) {
+        return [key, createNextState(transformer, state[key], path.concat([key]))];
       }
 
       // This sounds like an ineternal error. Maybe instead of doing this checks,
       // I should run event map through a validation.
       throw new Error(
-        `createNextState: invalid mapper, mapper can either be a function or array,
-        instead received ${mapper}`
+        `createNextState: invalid transformer, transformer can either be a function or array,
+        instead received ${transformer}`
       )
     });
-    
-  return processEventMap(relevantMappers, state, event);
+
+  return processEventMap(relevantTransformers, state, event);
 });
