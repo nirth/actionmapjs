@@ -69,15 +69,31 @@ describe('createNextState should', () => {
     expect(createNextState).to.be.a('function');
   });
 
+  it('show both substate and full state to transformers', () => {
+    const initialState = {a: 1, b: 2, c: 3, sum: 0}
+    const computeSum = (_1, state) => {
+      expect(state).to.deep.equal({a: 1, b: 2, c: 3, sum: 0})
+      const {a, b, c} = state
+      return a + b + c
+    }
+
+    const eventMap = [
+      ['sum', allowEventType('sum'), computeSum],
+    ]
+
+    const stateOne = createNextState(eventMap, initialState, [], {type: 'sum', payload: true});
+    expect(stateOne).to.deep.equal({a: 1, b: 2, c: 3, sum: 6})
+  })
+
   it('create next state for simple (flat) event map', () => {
     const {initialState, eventMap} = flatFixtures();
 
     const stateOne = createNextState(eventMap, initialState, [], {type: 'initialize', payload: true});
     expect(stateOne).to.deep.equal({initialized: true, numTimesRefreshed: 0});
-    
+
     const stateTwo = createNextState(eventMap, stateOne, [], {type: 'refresh', payload: 0});
     expect(stateTwo).to.deep.equal({initialized: true, numTimesRefreshed: 1});
-    
+
     const stateThree = createNextState(eventMap, stateTwo, [], {type: 'refresh', payload: 1});
     expect(stateThree).to.deep.equal({initialized: true, numTimesRefreshed: 2});
   });
