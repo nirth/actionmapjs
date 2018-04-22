@@ -18,7 +18,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install yarn && yarn -v
       - run:
         working_directory: ~/matejs/matejs
-        command: ls -al .
+        command: yarn install
 
 workflows:
   version: 2
