@@ -2,13 +2,13 @@ version: 2
 
 jobs:
   matejs_test:
-    working_directory: ./matejs/matejs
+    working_directory: ~/matejs/matejs
     docker:
-      - image: circleci/node:9.11.1
+      - image: circleci/node:9
     steps:
       - run:
           name: Test
-          command: npm run ci
+          command: yarn run ci
       - store_artifacts:
           path: test-results.xml
           prefix: tests
