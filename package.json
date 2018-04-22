@@ -2,10 +2,14 @@
   "name": "matejs",
   "version": "0.2.0",
   "description": "Mate.js - Front Controller library following Flux Pattern",
-  "main": "index.js",
+  "main": "./lib/lib.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register",
-    "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --reporter mocha-junit-reporter"
+    "test": "npm run typecheck && npm run bdd",
+    "bdd": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register",
+    "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --reporter mocha-junit-reporter",
+    "typecheck": "node_modules/.bin/flow",
+    "build": "npm run clean && rollup -c --config rollup.config.js",
+    "example:kg": "echo \"Running kindagame.js\" && node --require babel-polyfill --require babel-register ./examples/kindagame.js"
   },
   "repository": {
     "type": "git",
@@ -42,8 +46,14 @@
     "sinon-chai-in-order": "^0.1.0"
   },
   "dependencies": {
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.70.0",
     "immutable": "^3.8.1",
     "ramda": "^0.24.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.58.1",
+    "rollup-plugin-flow": "^1.1.1",
+    "rollup-plugin-uglify": "^3.0.0",
     "rxjs": "^5.4.1"
   }
 }
