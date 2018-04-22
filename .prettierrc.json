@@ -1,6 +1,6 @@
 {
   "printWidth": 120,
-  "parser": "babylon",
+  "parser": "flow",
   "semi": false,
   "singleQuote": true,
   "trailingComma": "es5",
