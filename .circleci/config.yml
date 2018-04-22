@@ -17,8 +17,8 @@ jobs:
       - run: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
       - run: sudo apt-get update && sudo apt-get install yarn && yarn -v
       - run:
-        working_directory: ~/matejs/matejs
-        command: yarn install
+          working_directory: ~/matejs/matejs
+          command: yarn install
 
 workflows:
   version: 2
