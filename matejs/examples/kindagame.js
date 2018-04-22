@@ -1,4 +1,8 @@
+// @flow
+
 import {createStore, allowEventType} from '../src'
+
+const a: string = 1
 
 const transformNotifications = (event, notifications, state) => {
   console.log('transformNotifications:state', event, state)
@@ -13,7 +17,7 @@ const identityTransformer = (event, state, subState) => {
   return subState
 }
 
-const alwaysTrue = (event) => {
+const alwaysTrue = (event: string) => {
   console.log('alwaysTrue', event)
   return true
 }
