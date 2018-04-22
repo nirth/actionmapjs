@@ -1,10 +1,3 @@
+export {allowEventType, createSimpleEvent, simpleEventFactory} from './utils'
 
-export {
-  allowEventType,
-  createSimpleEvent,
-  simpleEventFactory,
-} from './utils';
-
-export {
-  createStore
-} from './createStore';
+export {createStore} from './createStore'
