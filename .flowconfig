@@ -1,0 +1,12 @@
+[ignore]
+*.backup
+*.backup.*
+
+
+[include]
+
+[libs]
+
+[options]
+
+[lints]
