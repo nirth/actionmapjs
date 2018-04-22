@@ -1,7 +1,8 @@
 [ignore]
 *.backup
 *.backup.*
-
+node_modules/
+*.spec.js
 
 [include]
 
