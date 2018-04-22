@@ -8,7 +8,7 @@ const DEFAULT_OPTIONS = {
 }
 
 class Store {
-  constructor(eventMap, state, middleware, options = DEFAULT_OPTIONS) {
+  constructor(eventMap, state, middleware = [], options = DEFAULT_OPTIONS) {
     this.publisher = new Subject()
 
     this.history = List.of(state)

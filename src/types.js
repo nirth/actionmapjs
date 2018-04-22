@@ -1,14 +1,16 @@
 // @flow
 
-type GuardFunction = (event) => boolean
+export type GuardFunction = (event: Event) => boolean
 export type Guard = GuardFunction | boolean
 
-type Event = {
+export type Event = {
   type: string,
   payload: ?Object,
 }
 
-type State = ?Object
-type SubState = ?Object
+export type State = ?Object
 
-type Transformer = (Event, ?State, ?SubState) => SubState
+export type Transformer = (event: Event, state: State, subState: State) => State
+
+export type EventMapItem = [string, Guard, Transformer]
+export type EventMap = EventMapItem[]
