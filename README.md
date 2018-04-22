@@ -15,7 +15,7 @@ const selectSum = (state) => state.sum;
 // Creating simple event with type and payload
 const createAddEvent = (summand) => ({type: 'add', payload: summand})
 
-// Mapper takes in values and returns new values. 
+// Mapper takes in values and returns new values.
 // I know, at this point it actually looks exactly like reducing,
 const mapSum = (event, state) => {
   const sum = selectSum(state)
@@ -30,7 +30,7 @@ const initialState = {sum: 0}
 const eventMap = [['sum', allowEventType('add'), mapSum]]
 
 // In example above, every time we get event `add`,
-//function `mapSum` will be used to map new value to `sum`. 
+//function `mapSum` will be used to map new value to `sum`.
 
 // Standard - create store
 const store = createStore(eventMap, initialState)
@@ -41,6 +41,12 @@ store.dispatch(createAddEvent(3))
 
 console.log(`Sum is ${store.state.sum}`) // Sum is 6
 ```
+
+## Architecture Decisions
+
+## Explicit "curried" function, instead of auto-curry.
+Explicitly defined curried function (e.g. `(a, b) => (c) => a + b + c`) was favoured in long run due to performance concerns,
+even if curry provided by Ramda or Lodash is much prettier and cleaner solution.
 
 
 

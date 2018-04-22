@@ -1,5 +1,3 @@
-import {curry} from 'ramda'
-
 const getState = (state, key) => state[key]
 const setState = (state, key, value) => Object.assign({}, state, {[key]: value})
 
@@ -26,7 +24,8 @@ export const processEventMap = (map, state, event) =>
     return setState(state, key, nextSubState)
   }, state)
 
-export const createNextState = curry((eventMap, state, path, event) => {
+//
+const _createNextState = (eventMap, state, path) => (event) => {
   const relevantTransformers = eventMap
     // Evaluate guards to actual conditions
     .map(([key, guard, transformer]) => [key, evaluateGuard(guard, event), transformer])
@@ -38,7 +37,7 @@ export const createNextState = curry((eventMap, state, path, event) => {
       if (typeof transformer === 'function') {
         return [key, transformer]
       } else if (Array.isArray(transformer)) {
-        return [key, createNextState(transformer, state[key], path.concat([key]))]
+        return [key, _createNextState(transformer, state[key], path.concat([key]))]
       }
 
       // This sounds like an ineternal error. Maybe instead of doing this checks,
@@ -50,4 +49,10 @@ export const createNextState = curry((eventMap, state, path, event) => {
     })
 
   return processEventMap(relevantTransformers, state, event)
-})
+}
+
+export const createNextState = (eventMap, state, path, event) => _createNextState(eventMap, state, path)(event)
+
+// export const createNextState = curry((eventMap, state, path, event) => {
+
+// })
