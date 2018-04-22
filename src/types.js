@@ -10,7 +10,7 @@ export type Event = {
 
 export type State = ?Object
 
-export type Transformer = (event: Event, state: State, subState: State) => State
+export type Transformer = (event: Event, state: ?State, subState: ?State) => State
 
 export type EventMapItem = [string, Guard, Transformer]
 export type EventMap = EventMapItem[]
