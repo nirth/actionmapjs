@@ -23,7 +23,8 @@ jobs:
           working_directory: ~/matejs/matejs/matejs
           command: yarn run ci
       - store_test_results:
-          path: ~/matejs/matejs/matejs/test-results.xml
+          working_directory: ~/matejs/matejs/matejs
+          path: test-results.xml
 
 workflows:
   version: 2
