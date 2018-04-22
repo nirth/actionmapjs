@@ -22,6 +22,7 @@ jobs:
       - run:
           working_directory: ~/matejs/matejs/matejs
           command: yarn run ci
+      - run: cp test-results.xml $CIRCLE_TEST_REPORTS/
 
 workflows:
   version: 2
