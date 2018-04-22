@@ -6,18 +6,53 @@ jobs:
     docker:
       - image: circleci/node:9
     steps:
-      - yarn_version
-        name: Yarn
-        command: yarn version
-      - run:
-        name: Test
-        command: yarn run ci
-      - store_artifacts:
-        path: test-results.xml
-        prefix: tests
+      - checkout # special step to check out source code to working directory
+      - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+      - run: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      - run: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      - run: sudo apt-get update && sudo apt-get install yarn && yarn -v
 
 workflows:
   version: 2
   test_matejs:
     jobs:
       - matejs_test
+
+# version: 2 # use CircleCI 2.0
+# jobs:
+#   build:
+#     working_directory: ~/matejs/matejs # directory where steps will run
+#     docker:
+#       - image: circleci/node:9
+#     steps:
+#       - checkout # special step to check out source code to working directory
+#       - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+#       - run: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+#       - run: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+#       - run: sudo apt-get update && sudo apt-get install yarn && yarn -v
+#       - run:
+#           name: update-yarn
+#           command: 'sudo npm install -g npm@latest'
+#       - restore_cache: # special step to restore the dependency cache
+#           key: dependency-cache-{{ checksum "package.json" }}
+#       - run:
+#           name: install-npm-wee
+#           command: npm install
+#       - save_cache: # special step to save the dependency cache
+#           key: dependency-cache-{{ checksum "package.json" }}
+#           paths:
+#             - ./node_modules
+#       - run: # run tests
+#           name: test
+#           command: npm test
+#       - run: # run coverage report
+#           name: code-coverage
+#           command: './node_modules/.bin/nyc report --reporter=text-lcov'
+#       - store_artifacts: # special step to save test results as as artifact
+#           path: test-results.xml
+#           prefix: tests
+#       - store_artifacts:
+#           path: coverage
+#           prefix: coverage
+#       - store_test_results: # special step to upload test results for display in Test Summary
+#           path: test-results.xml
