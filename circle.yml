@@ -10,8 +10,8 @@ jobs:
           name: Test
           command: npm run ci
       - store_artifacts:
-          name: Copy code coverage
-          command: './test-results.xml $CIRCLE_TEST_REPORTS/junit.xml'
+          path: test-results.xml
+          prefix: tests
 
 workflows:
   version: 2
