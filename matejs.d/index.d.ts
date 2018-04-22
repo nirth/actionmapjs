@@ -7,16 +7,16 @@
 
 import * as matejs from 'matejs'
 
-declare module 'some-js-lib' {
+declare module 'matejs' {
   export type GuardFunction = (event: Event) => boolean
   export type Guard = GuardFunction | boolean
 
   export type Event = {
     type: string,
-    payload: åObject?,
+    payload: Object?,
   }
 
-  export type State = ?Object
+  export type State = Object?
 
   export type Transformer = (event: Event, state: State?, subState: State?) => State
 

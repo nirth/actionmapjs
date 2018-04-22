@@ -1,0 +1,9 @@
+machine:
+  node:
+    version: 7.10.0
+
+test:
+  override:
+    - cd matejs
+    - npm run ci
+    - mv ./test-results.xml $CIRCLE_TEST_REPORTS/junit.xml
