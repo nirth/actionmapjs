@@ -1,7 +1,6 @@
-
-import {List} from 'immutable';
-import {Subject} from 'rxjs';
-import {createNextState} from './createNextState';
+import {List} from 'immutable'
+import {Subject} from 'rxjs'
+import {createNextState} from './createNextState'
 
 class Store {
   constructor(eventMap, state) {
@@ -12,14 +11,14 @@ class Store {
   }
 
   dispatch(event) {
-    const previousState = this.state;
-    const eventMap = this.eventMap;
+    const previousState = this.state
+    const eventMap = this.eventMap
 
     const nextState = createNextState(eventMap, previousState, [], event)
 
-    this.pushState(nextState);
-  
-    this.publisher.next(nextState);
+    this.pushState(nextState)
+
+    this.publisher.next(nextState)
   }
 
   subscribe(onNext) {
@@ -27,12 +26,12 @@ class Store {
   }
 
   pushState(state) {
-    this.history = this.history.push(state);
+    this.history = this.history.push(state)
   }
 
   get state() {
-    return this.history.last();
+    return this.history.last()
   }
 }
 
-export const createStore = (eventMap, initialState) => new Store(eventMap, initialState);
+export const createStore = (eventMap, initialState) => new Store(eventMap, initialState)
