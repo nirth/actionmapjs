@@ -22,9 +22,9 @@ export const startGame = () => {
   console.log('startGame')
   const store = createStore(
     [
-      // ['notifications', true, transformNotifications],
+      ['notifications', true, transformNotifications],
       ['game', alwaysTrue, identityTransformer],
-      ['ui', alwaysTrue, ['hp', true, identityTransformer]],
+      // ['ui', alwaysTrue, [['hp', true, identityTransformer]]],
     ],
     {
       notifications: [],
