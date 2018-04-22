@@ -2,15 +2,30 @@ import {List} from 'immutable'
 import {Subject} from 'rxjs'
 import {createNextState} from './createNextState'
 
+const DEFAULT_OPTIONS = {
+  debugMode: false,
+  developmentMode: false,
+}
+
 class Store {
-  constructor(eventMap, state) {
+  constructor(eventMap, state, middleware, options = DEFAULT_OPTIONS) {
     this.publisher = new Subject()
 
     this.history = List.of(state)
     this.eventMap = eventMap
+
+    // Parsing Options
+    this.options = options
+
+    // Development/Debug code. Should use env instead
+    this.developmentMode = options.developmentMode
   }
 
   dispatch(event) {
+    if (this.developmentMode) {
+      console.log('Store.dispatch', event)
+    }
+
     const previousState = this.state
     const eventMap = this.eventMap
 
@@ -34,4 +49,5 @@ class Store {
   }
 }
 
-export const createStore = (eventMap, initialState) => new Store(eventMap, initialState)
+export const createStore = (eventMap, initialState, middleware, options) =>
+  new Store(eventMap, initialState, middleware, options)

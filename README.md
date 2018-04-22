@@ -42,6 +42,20 @@ store.dispatch(createAddEvent(3))
 console.log(`Sum is ${store.state.sum}`) // Sum is 6
 ```
 
+## Concepts and How Tos
+
+### Event
+
+Signature: `Event = {type: string, payload: ?Object}`
+Event is a special type of object, that triggers a behavior. It consists of two main parameters: `type` that describes it,
+and `payload` that contains data needed to process event.
+
+### Transformers and EventHandlers
+`type Transformer = (event: Event, state: State, subState: SubState) => SubState`
+
+Event handler is a function that takes in three arguments: `event`, entire `state`, and it's `subState`,
+and returns new value for it‘s `subState`.
+
 ## Architecture Decisions
 
 ## Explicit "curried" function, instead of auto-curry.
