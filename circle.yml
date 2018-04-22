@@ -3,6 +3,8 @@ version: 2
 jobs:
   matejs_test:
     working_directory: ./matejs
+    docker:
+      - image: circleci/node:9.6.1
     steps:
       - run:
         name: Test
