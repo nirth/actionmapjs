@@ -20,10 +20,16 @@ jobs:
           working_directory: ~/matejs/matejs/matejs
           command: yarn install
       - run:
+      - run:
           working_directory: ~/matejs/matejs/matejs
           command: yarn run ci
+          environment:
+            MOCHA_FILE: junit/test-results.xml
+          when: always
       - store_test_results:
-          path: /home/circleci/matejs/matejs/matejs/test-results.xml
+          path: /home/circleci/matejs/matejs/matejs/junit
+      - store_artifacts:
+          path: /home/circleci/matejs/matejs/matejs/junit
 
 workflows:
   version: 2
