@@ -23,9 +23,9 @@ jobs:
       - run:
           command: yarn run ci
       - store_test_results:
-          path: junit/test-results.xml
+          path: /home/circleci/matejs/matejs/junit/test-results.xml
       - store_test_results:
-          path: junit/test-results.xml
+          path: /home/circleci/matejs/matejs/junit/test-results.xml
 
 workflows:
   version: 2
