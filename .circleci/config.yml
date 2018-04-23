@@ -10,7 +10,8 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       MOCHA_FILE: junit/test-results.xml
     steps:
-      - checkout # special step to check out source code to working directory
+      - checkout:
+          path: ~/
       - run: mkdir -p $CIRCLE_ARTIFACTS
       - run: mkdir -p $CIRCLE_TEST_REPORTS
       - run: sudo apt-get install apt-transport-https # This part scares me, but have to run it before apt-get update O.o?!
@@ -18,16 +19,12 @@ jobs:
       - run: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
       - run: sudo apt-get update && sudo apt-get install --no-install-recommends yarn && yarn -v
       - run:
-          working_directory: ~/matejs/matejs/matejs
           command: yarn install
       - run:
-          working_directory: ~/matejs/matejs/matejs
           command: yarn run ci
       - store_test_results:
-          working_directory: ~/matejs/matejs/matejs/
           path: junit/test-results.xml
       - store_test_results:
-          working_directory: ~/matejs/matejs/matejs/
           path: junit/test-results.xml
 
 workflows:
