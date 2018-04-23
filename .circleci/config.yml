@@ -23,9 +23,9 @@ jobs:
       - run:
           command: yarn run ci
       - store_test_results:
-          path: /home/circleci/matejs/matejs/test-results
+          path: ./test-results
       - store_artifacts:
-          path: /home/circleci/matejs/matejs/test-results
+          path: ./test-results
 
 workflows:
   version: 2
