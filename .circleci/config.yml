@@ -1,0 +1,34 @@
+version: 2
+
+jobs:
+  matejs_test:
+    working_directory: ~/matejs/matejs
+    docker:
+      - image: circleci/node:9
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+      MOCHA_FILE: test-results/mocha/test-results.xml
+    steps:
+      - checkout:
+          path: ~/matejs
+      - run: mkdir -p $CIRCLE_ARTIFACTS
+      - run: mkdir -p $CIRCLE_TEST_REPORTS
+      - run: sudo apt-get install apt-transport-https # This part scares me, but have to run it before apt-get update O.o?!
+      - run: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      - run: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      - run: sudo apt-get update && sudo apt-get install --no-install-recommends yarn && yarn -v
+      - run:
+          command: yarn install
+      - run:
+          command: yarn run ci
+      - store_test_results:
+          path: ./test-results
+      - store_artifacts:
+          path: ./test-results
+
+workflows:
+  version: 2
+  test_matejs:
+    jobs:
+      - matejs_test
