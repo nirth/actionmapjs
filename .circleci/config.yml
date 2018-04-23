@@ -11,7 +11,7 @@ jobs:
       MOCHA_FILE: junit/test-results.xml
     steps:
       - checkout:
-          path: ~/
+          path: ~/matejs
       - run: mkdir -p $CIRCLE_ARTIFACTS
       - run: mkdir -p $CIRCLE_TEST_REPORTS
       - run: sudo apt-get install apt-transport-https # This part scares me, but have to run it before apt-get update O.o?!
