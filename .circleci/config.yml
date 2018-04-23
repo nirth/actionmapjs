@@ -8,7 +8,6 @@ jobs:
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-      MOCHA_FILE: junit/test-results.xml
     steps:
       - checkout # special step to check out source code to working directory
       - run: mkdir -p $CIRCLE_ARTIFACTS
@@ -21,13 +20,11 @@ jobs:
           working_directory: ~/matejs/matejs/matejs
           command: yarn install
       - run:
-      - run:
           working_directory: ~/matejs/matejs/matejs
           command: yarn run ci
       - store_test_results:
-          path: /home/circleci/matejs/matejs/matejs/junit
-      - store_artifacts:
-          path: /home/circleci/matejs/matejs/matejs/junit
+          working_directory: ~/matejs/matejs/matejs/
+          path: test-results.xml
 
 workflows:
   version: 2
