@@ -1,6 +1,8 @@
 // @flow
+import {compose} from 'ramda'
+import type {Guard, GuardFunction, Transformer, EventType, EventMap, EventMapItem, Payload, Value, State} from './types'
 
-import type {Guard, GuardFunction, Transformer, Event, EventMap, EventMapItem, State} from './types'
+type KeyTransformerPair = [string, Transformer]
 
 const getState = (state: State, key: string): State => {
   if (state === null || state === undefined) {
@@ -9,13 +11,13 @@ const getState = (state: State, key: string): State => {
 
   return state[key]
 }
-const setState = (state: State, key: string, value: ?Object): State => Object.assign({}, state, {[key]: value})
+const setState = (state: State, key: string, value: Value): State => Object.assign({}, state, {[key]: value})
 
-const evaluateGuard = (guard: Guard, event: Event): boolean => {
+const evaluateGuard = (guard: Guard, {type, payload}: Event): boolean => {
   if (typeof guard === 'boolean') {
     return guard
   } else if (typeof guard === 'function') {
-    return guard(event)
+    return guard({type, payload})
   }
 
   throw new Error(
@@ -24,7 +26,15 @@ const evaluateGuard = (guard: Guard, event: Event): boolean => {
   )
 }
 
-type KeyTransformerPair = [string, Transformer]
+const computeNextState = (eventType: EventType, payload: Payload) => (
+  state,
+  [key, transformer]: KeyTransformerPair
+): State => {
+  const previousValue: Value = getState(state, key)
+  const nextValue: Value = transformer(payload, previousValue, state)
+  const nextState: State = setState(state, key, nextValue)
+  return nextState
+}
 
 export const processEventMap = (
   keysAndTransformers: KeyTransformerPair[],
