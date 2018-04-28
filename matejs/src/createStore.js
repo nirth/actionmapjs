@@ -29,7 +29,7 @@ class Store {
     const previousState = this.state
     const eventMap = this.eventMap
 
-    const nextState = createNextState(eventMap, previousState, [], event)
+    const nextState = createNextState(eventMap, previousState, [], event.type, event.payload)
 
     this.pushState(nextState)
 

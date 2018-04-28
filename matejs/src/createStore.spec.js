@@ -12,9 +12,9 @@ chai.use(sinonChai)
 chai.use(sinonChaiInOrder)
 
 const mapInitialization = () => true
-const mapAge = ({payload: age}) => age
-const mapFirstName = ({payload: firstName}) => firstName
-const mapLastName = ({payload: lastName}) => lastName
+const mapAge = (age) => age
+const mapFirstName = (firstName) => firstName
+const mapLastName = (lastName) => lastName
 
 const stateFixture = () => ({
   initialState: {

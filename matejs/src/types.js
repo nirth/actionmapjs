@@ -1,16 +1,22 @@
 // @flow
 
-export type GuardFunction = (event: Event) => boolean
-export type Guard = GuardFunction | boolean
+export type Key = string | Function // (string, or Type / Class)
+export type Value = string | number | boolean | ?Object
+
+export type EventType = Key
+export type Payload = Value
 
 export type Event = {
-  type: string,
-  payload: ?Object,
+  type: EventType,
+  payload: Payload,
 }
+
+export type GuardFunction = (eventType: EventType, payload: Payload) => boolean
+export type Guard = GuardFunction | boolean
 
 export type State = ?Object
 
-export type Transformer = (event: Event, state: ?State, subState: ?State) => State
+export type Transformer = (payload: Payload, value: Value, state: ?State) => State
 
 export type EventMapItem = [string, Guard, Transformer]
 export type EventMap = EventMapItem[]
