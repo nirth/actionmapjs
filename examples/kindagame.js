@@ -1,58 +1,58 @@
 // @flow
 
-import {createStore, allowEventType} from '../src'
+import { createStore, allowEventType } from ".matejs/src";
 
-const a: string = 1
+const a: string = 1;
 
 const transformNotifications = (event, notifications, state) => {
-  console.log('transformNotifications:state', event, state)
+  console.log("transformNotifications:state", event, state);
 
   // if (event.type === 'startGame') return notifications.concat([{a: 1}])
-  return 1
-}
+  return 1;
+};
 
 const identityTransformer = (event, state, subState) => {
-  console.log('defaultEventHandler', event, subState, subState)
+  console.log("defaultEventHandler", event, subState, subState);
 
-  return subState
-}
+  return subState;
+};
 
 const alwaysTrue = (event: string) => {
-  console.log('alwaysTrue', event)
-  return true
-}
+  console.log("alwaysTrue", event);
+  return true;
+};
 
 export const startGame = () => {
-  console.log('startGame')
+  console.log("startGame");
   const store = createStore(
     [
-      ['notifications', true, transformNotifications],
-      ['game', alwaysTrue, identityTransformer],
+      ["notifications", true, transformNotifications],
+      ["game", alwaysTrue, identityTransformer]
       // ['ui', alwaysTrue, [['hp', true, identityTransformer]]],
     ],
     {
       notifications: [],
-      game: {a: 1},
+      game: { a: 1 },
       ui: {
-        hp: 1,
-      },
+        hp: 1
+      }
     },
     null,
     {
-      developmentMode: true,
+      developmentMode: true
     }
-  )
+  );
 
   store.dispatch({
-    type: 'startGame',
+    type: "startGame"
     //   payload: {
     //     title: 'Welcome to your Adventure',
     //   },
-  })
+  });
 
-  return store
-}
+  return store;
+};
 
-const store = startGame()
+const store = startGame();
 
-console.log(store.state)
+console.log(store.state);
