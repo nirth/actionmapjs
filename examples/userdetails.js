@@ -1,4 +1,4 @@
-import {createStore, allowEventType} from '../src'
+import {createStore, allowEventType} from './matejs/src'
 
 const initialize = () => ({type: 'initialize'})
 const updateFirstName = (firstName) => ({
