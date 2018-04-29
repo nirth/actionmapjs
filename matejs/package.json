@@ -1,6 +1,6 @@
 {
   "name": "matejs",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "Mate.js - Front Controller library following Flux Pattern",
   "main": "./lib/lib.js",
   "scripts": {
@@ -9,9 +9,7 @@
     "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --reporter mocha-junit-reporter",
     "typecheck": "node_modules/.bin/flow",
     "clean": "rimraf lib",
-    "build": "yarn run clean && rollup -c --config rollup.config.js",
-    "ex:kg": "echo \"Running Example: kindagame.js\" && node --require babel-polyfill --require babel-register ./examples/kindagame.js",
-    "ex:ud": "echo \"Running Example: kindagame.js\" && node --require babel-polyfill --require babel-register ./examples/userdetails.js"
+    "build": "yarn run clean && rollup -c --config rollup.config.js"
   },
   "repository": {
     "type": "git",
