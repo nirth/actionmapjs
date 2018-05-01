@@ -34,10 +34,7 @@ lib/
 node_modules/
 jspm_packages/
 
-# Typescript v1 declaration files
-typings/
-
-# Optional npm cache directory
+# Typescript v1 declaration files# Optional npm cache directory
 .npm
 
 # Optional eslint cache
@@ -57,3 +54,6 @@ typings/
 
 # Mac OS
 .DS_Store
+
+# Projects related
+junit
