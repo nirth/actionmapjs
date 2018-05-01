@@ -20,3 +20,7 @@ export type Transformer = (payload: Payload, value: Value, state: ?State) => Sta
 
 export type EventMapItem = [string, Guard, Transformer]
 export type EventMap = EventMapItem[]
+
+export type StoreInstructions = {
+  [Key]: [Value, Guard, Transformer],
+}
