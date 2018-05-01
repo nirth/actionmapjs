@@ -59,10 +59,11 @@ and returns new value for it‘s `subState`.
 ## Architecture Decisions
 
 ## Explicit "curried" function, instead of auto-curry.
-Explicitly defined curried function (e.g. `(a, b) => (c) => a + b + c`) was favoured in long run due to performance concerns,
-even if curry provided by Ramda or Lodash is much prettier and cleaner solution.
+Explicitly defined curried function (e.g. `(a, b) => (c) => a + b + c`) was favoured in long run due to performance concerns, even if curry provided by Ramda or Lodash is much prettier and cleaner solution.
 
+## Prettierjs
+My favourite thing about good old days of Flash / ActionScript / Flex development were - autuformatted code. Since no one ever bothered
 
-
+##
 
 
