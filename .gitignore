@@ -57,3 +57,4 @@ jspm_packages/
 
 # Projects related
 junit
+test-results.xml
