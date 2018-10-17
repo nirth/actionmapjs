@@ -1,6 +1,6 @@
 // @flow
 import {compose} from 'ramda'
-import type {Guard, GuardFunction, Transformer, EventType, EventMap, EventMapItem, Payload, Value, State} from './types'
+import type {Guard, GuardFunction, Transformer, Event, EventType, EventMap, EventMapItem, Payload, Value, State} from './types'
 
 type KeyTransformerPair = [string, Transformer]
 
@@ -43,7 +43,7 @@ export const processEventMap = (
   payload: Payload
 ): State => keysAndTransformers.reduce(computeNextState(eventType, payload), state)
 
-const filterItemsByGuard = (eventType, payload) => ([key: string, guard: Guard, transformer: Transformer]): boolean =>
+const filterItemsByGuard = (eventType: EventType, payload: Payload) => ([key: string, guard: Guard, transformer: Transformer]): boolean =>
   evaluateGuard(guard, {type: eventType, payload})
 
 const pickKeyAndTransformer = ([key: string, predicate: boolean, transformer: Transformer]): KeyTransformerPair => [

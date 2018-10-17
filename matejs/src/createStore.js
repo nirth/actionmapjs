@@ -1,4 +1,5 @@
-import {List} from 'immutable'
+// @flow
+import type {Event, EventMap, State, Store, Payload} from './types'
 import {Subject} from 'rxjs'
 import {createNextState} from './createNextState'
 
@@ -7,47 +8,34 @@ const DEFAULT_OPTIONS = {
   developmentMode: false,
 }
 
-class Store {
-  constructor(eventMap, state, middleware = [], options = DEFAULT_OPTIONS) {
-    this.publisher = new Subject()
+export const createStore = (eventMap: EventMap, initialState: State, middleware: any = [], options: any = null) => {
+  const history = [initialState]
+  const publisher = new Subject()
+  const safeOptions = options === null ? DEFAULT_OPTIONS : options
+  const developmentMode = safeOptions.developmentMode
 
-    this.history = List.of(state)
-    this.eventMap = eventMap
+  const store: Store = {
+    get state(): State {
+      return history[history.length - 1]
+    },
 
-    // Parsing Options
-    this.options = options
-
-    // Development/Debug code. Should use env instead
-    this.developmentMode = options.developmentMode
-  }
-
-  dispatch(event) {
-    if (this.developmentMode) {
-      console.log('Store.dispatch', event)
+    subscribe: (onNext: any) => {
+      return publisher.subscribe(onNext)
+    },
+    dispatch: (event: Event): void => {
+      if (developmentMode) {
+        console.log('Store.dispatch', event)
+      }
+  
+      const previousState = history[history.length - 1]
+  
+      const nextState = createNextState(eventMap, previousState, [], event.type, event.payload)
+  
+      history.push(nextState)
+  
+      publisher.next(nextState)
     }
-
-    const previousState = this.state
-    const eventMap = this.eventMap
-
-    const nextState = createNextState(eventMap, previousState, [], event.type, event.payload)
-
-    this.pushState(nextState)
-
-    this.publisher.next(nextState)
   }
 
-  subscribe(onNext) {
-    return this.publisher.subscribe(onNext)
-  }
-
-  pushState(state) {
-    this.history = this.history.push(state)
-  }
-
-  get state() {
-    return this.history.last()
-  }
+  return store
 }
-
-export const createStore = (eventMap, initialState, middleware, options) =>
-  new Store(eventMap, initialState, middleware, options)

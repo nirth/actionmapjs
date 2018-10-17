@@ -1,3 +1,5 @@
+import { AnonymousSubject } from "rxjs/internal/Subject";
+
 // @flow
 
 export type Key = string | Function // (string, or Type / Class)
@@ -11,6 +13,13 @@ export type Event = {
   payload: Payload,
 }
 
+export type Store = {
+  subscribe: (onNext: Function) => any,
+  pushState: (state: State) => State,
+  dispatch: (event: Event) => void,
+  state: State
+}
+
 export type GuardFunction = (eventType: EventType, payload: Payload) => boolean
 export type Guard = GuardFunction | boolean
 
@@ -20,3 +29,4 @@ export type Transformer = (payload: Payload, value: Value, state: ?State) => Sta
 
 export type EventMapItem = [string, Guard, Transformer]
 export type EventMap = EventMapItem[]
+
