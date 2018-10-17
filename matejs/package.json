@@ -9,9 +9,7 @@
     "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --reporter mocha-junit-reporter",
     "typecheck": "node_modules/.bin/flow",
     "clean": "rimraf lib",
-    "build": "yarn run clean && rollup -c --config rollup.config.js",
-    "ex:kg": "echo \"Running Example: kindagame.js\" && node --require babel-polyfill --require babel-register ./examples/kindagame.js",
-    "ex:ud": "echo \"Running Example: kindagame.js\" && node --require babel-polyfill --require babel-register ./examples/userdetails.js"
+    "build": "yarn run clean && rollup -c --config rollup.config.js"
   },
   "repository": {
     "type": "git",
@@ -30,31 +28,27 @@
   },
   "homepage": "https://github.com/nirth/matejs#readme",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
-    "babel-register": "^6.24.1",
-    "chai": "^4.0.2",
-    "dirty-chai": "^2.0.0",
-    "mocha": "^3.4.2",
-    "mocha-circleci-reporter": "0.0.2",
-    "mocha-junit-reporter": "^1.13.0",
-    "prettier": "1.12.1",
-    "sinon": "^2.3.5",
-    "sinon-chai": "^2.11.0",
-    "sinon-chai-in-order": "^0.1.0",
     "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.70.0",
-    "rollup": "^0.58.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "flow-bin": "^0.83.0",
+    "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.66.6",
     "rollup-plugin-flow": "^1.1.1",
-    "rollup-plugin-uglify": "^3.0.0"
+    "rollup-plugin-terser": "^3.0.0",
+    "sinon": "^7.0.0",
+    "sinon-chai": "^3.2.0",
+    "sinon-chai-in-order": "^0.1.0",
+    "terser": "^3.10.1"
   },
   "dependencies": {
-    "immutable": "^3.8.1",
-    "ramda": "^0.24.1",
-    "rxjs": "^5.4.1"
+    "ramda": "^0.25.0",
+    "rxjs": "^6.3.3"
   }
 }
