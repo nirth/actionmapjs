@@ -17,7 +17,7 @@ export type Store = {
   subscribe: (onNext: Function) => any,
   pushState: (state: State) => State,
   dispatch: (event: Event) => void,
-  state: State
+  state: State,
 }
 
 export type GuardFunction = (eventType: EventType, payload: Payload) => boolean
