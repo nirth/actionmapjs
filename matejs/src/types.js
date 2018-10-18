@@ -20,6 +20,11 @@ export type Store = {
   state: State,
 }
 
+export type StoreOptions = {
+  traceMode: boolean,
+  developmentMode: boolean,
+}
+
 export type GuardFunction = (eventType: EventType, payload: Payload) => boolean
 export type Guard = GuardFunction | boolean
 

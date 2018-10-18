@@ -4,8 +4,8 @@ import {Subject} from 'rxjs'
 import {createNextState} from './createNextState'
 
 const DEFAULT_OPTIONS = {
-  debugMode: false,
   developmentMode: false,
+  traceMode: false,
 }
 
 export const createStore = (eventMap: EventMap, initialState: State, middleware: any = [], options: any = null) => {
@@ -13,6 +13,7 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
   const publisher = new Subject()
   const safeOptions = options === null ? DEFAULT_OPTIONS : options
   const developmentMode = safeOptions.developmentMode
+  const traceMode = safeOptions.traceMode
 
   const store: Store = {
     get state(): State {
@@ -23,8 +24,14 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
       return publisher.subscribe(onNext)
     },
     dispatch: (event: Event): void => {
-      if (developmentMode) {
+      if (traceMode) {
         console.log('Store.dispatch', event)
+      }
+
+      if (developmentMode) {
+        if (!(typeof event.type === 'function' || typeof event.type === 'string')) {
+          throw new Error(`Store.dispatch: Event.type has to be of Event type, instead got ${event.type}`)
+        }
       }
   
       const previousState = history[history.length - 1]

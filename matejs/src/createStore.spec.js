@@ -6,6 +6,7 @@ import {spy} from 'sinon'
 
 import {allowEventType} from './utils'
 import {createStore} from './createStore'
+import { StringDecoder } from 'string_decoder';
 
 chai.use(dirtyChai)
 chai.use(sinonChai)
@@ -127,6 +128,21 @@ describe('createStore should', () => {
         initialized: true,
         user: {name: {firstName: 'Malika', lastName: 'Favre'}, age: 22},
       })
+  })
+
+  it('able to detect invalid event type in develop mode', () => {
+    const {
+      initialState,
+      eventMap,
+      events: {initialize, updateFirstName, updateLastName, updateAge},
+    } = stateFixture()
+
+    const store = createStore(eventMap, initialState, [], {developmentMode: true})
+
+    expect(() => store.dispatch(null)).to.throw()
+    expect(() => store.dispatch({})).to.throw()
+    expect(() => store.dispatch({name: 'foo'})).to.throw()
+    expect(() => store.dispatch({type: 'foobar'})).not.to.throw()
   })
 
   it('dispatch new events and allow subscribers to unsubscribe', () => {
