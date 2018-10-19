@@ -15,15 +15,16 @@ const withExplicitMateStore = (store: any, component: any, selectors: UnparsedSe
       super(props)
 
       this.state = ({mateState: {}}: any)
+      this.boundOnNextState = this.onNextState.bind(this)
     }
 
     componentDidMount() {
       this.onNextState(store.state)
-      store.subscribe(this.onNextState)
+      store.subscribe(this.boundOnNextState)
     }
 
     componentWillUnmount() {
-      store.unsubscribe(this.onNextState)
+      store.unsubscribe(this.boundOnNextState)
     }
 
     onNextState(state: any) {
