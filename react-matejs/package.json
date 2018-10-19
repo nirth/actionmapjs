@@ -15,8 +15,9 @@
   "author": "David Sergey Grigoryan <me@davidsergey.com> (https://davidsergey.com)\"",
   "license": "MIT",
   "peerDependencies": {
-    "matejs": "^0.3.3",
-    "react": "^16.5.2"
+    "matejs": "^0.4.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -25,8 +26,12 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
+    "chai-enzyme": "^1.0.0-beta.1",
     "dirty-chai": "^2.0.1",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
     "flow-bin": "^0.83.0",
+    "jsdom": "^12.2.0",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
     "rimraf": "^2.6.2",
