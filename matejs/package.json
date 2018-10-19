@@ -1,12 +1,12 @@
 {
   "name": "matejs",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Mate.js - Front Controller library following Flux Pattern",
   "main": "./lib/lib.js",
   "scripts": {
     "test": "yarn run typecheck && yarn run bdd",
-    "bdd": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register",
-    "ci": "node_modules/.bin/mocha ./**/*.spec.js --require babel-register --reporter mocha-junit-reporter",
+    "bdd": "node_modules/.bin/mocha ./**/*.spec.js --require @babel/register",
+    "ci": "node_modules/.bin/mocha ./**/*.spec.js --require @babel/register --reporter mocha-junit-reporter",
     "typecheck": "node_modules/.bin/flow",
     "clean": "rimraf lib",
     "build": "yarn run clean && rollup -c --config rollup.config.js"
@@ -28,11 +28,11 @@
   },
   "homepage": "https://github.com/nirth/matejs#readme",
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2016": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-flow": "^6.23.0",
-    "babel-register": "^6.26.0",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "flow-bin": "^0.83.0",
