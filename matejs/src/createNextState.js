@@ -41,10 +41,8 @@ const evaluateGuard = (guard: Guard, event: Event): boolean => {
   )
 }
 
-const computeNextState = (eventType: EventType, payload: Payload) => (
-  state,
-  [path, transformer]: PathTransformerPair
-): State => {
+const computeNextState = (event: Event) => (state, [path, transformer]: PathTransformerPair): State => {
+  const {payload} = event
   const computedPath = typeof path === 'function' ? path(payload) : path
   const computedPathValid = typeof computedPath === 'string' && computedPath.length > 0
   const stateValid = state !== null && state !== undefined
@@ -72,24 +70,7 @@ const computeNextState = (eventType: EventType, payload: Payload) => (
   }
 }
 
-export const processEventMap = (
-  pathAndTransformers: PathTransformerPair[],
-  state: State,
-  eventType: EventType,
-  payload: Payload
-): State => {
-  console.log(
-    'processEventMap',
-    'pathAndTransformers:',
-    pathAndTransformers,
-    'state:',
-    state,
-    'eventType:',
-    eventType,
-    'payload:',
-    payload
-  )
-
+export const processEventMap = (pathAndTransformers: PathTransformerPair[], state: State, event: Event): State => {
   if (state === null || state === undefined) {
     throw new Error(`
       [internal] processEventMap
@@ -104,7 +85,7 @@ export const processEventMap = (
     `)
   }
 
-  return pathAndTransformers.reduce(computeNextState(eventType, payload), state)
+  return pathAndTransformers.reduce(computeNextState(event), state)
 }
 
 const filterItemsByGuard = (event: Event) => ([_, guard]: EventMapItem) => {
@@ -116,7 +97,6 @@ const pickPathAndTransformer = ([
   predicate: boolean,
   transformer: Transformer,
 ]): PathTransformerPair => {
-  console.log('pickPathAndTransformer', path, predicate, transformer)
   return [path, transformer]
 }
 
@@ -126,7 +106,6 @@ const validateAndComputePathTransformerPair = (
   currentPath: PathItem[],
   eventType: EventType
 ) => ([path, transformer]: PathTransformerPair) => {
-  console.log('validateAndComputePathTransformerPair', eventMap, state, currentPath, eventType)
   if (typeof transformer === 'function') {
     return [path, transformer]
   } else if (Array.isArray(transformer)) {
@@ -146,10 +125,9 @@ const validateAndComputePathTransformerPair = (
 const _createNextState = (eventMap: EventMap, state: State, path: PathItem, eventType: EventType) => (
   payload: Payload
 ): State => {
-  console.log('_createNextState', eventMap, state, path, eventType)
-
   if (Array.isArray(eventMap)) {
-    const filteredByGuardMapItems = eventMap.filter(filterItemsByGuard({type: eventType, payload}))
+    const event: Event = {type: eventType, payload}
+    const filteredByGuardMapItems = eventMap.filter(filterItemsByGuard(event))
     const transformedMapItems = filteredByGuardMapItems.map(
       compose(
         validateAndComputePathTransformerPair(eventMap, state, path, eventType),
@@ -157,7 +135,7 @@ const _createNextState = (eventMap: EventMap, state: State, path: PathItem, even
       )
     )
 
-    return processEventMap(transformedMapItems, state, eventType, payload)
+    return processEventMap(transformedMapItems, state, event)
   }
 
   throw new Error(`
