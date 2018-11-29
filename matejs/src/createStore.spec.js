@@ -6,6 +6,7 @@ import {spy} from 'sinon'
 
 import {allowEventType} from './utils'
 import {createStore} from './createStore'
+import {eventMap} from './utils'
 import {createPersonsStateFixture, createPersonsAndPetStateFixture, createPerson, createPet} from './test.fixtures.js'
 
 chai.use(dirtyChai)

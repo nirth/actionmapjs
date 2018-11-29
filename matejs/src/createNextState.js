@@ -46,10 +46,9 @@ const evaluateGuard = (guard: Guard, event: Event): boolean => {
 
 const computeNextState = (event: Event) => (state, [path, transformer]: PathTransformerPair): State => {
   const {payload} = event
-  const computedPath = typeof path === 'function' ? path(payload) : path
-  const previousValue: Value = getState(state, computedPath)
+  const previousValue: Value = getState(state, path)
   const nextValue: Value = transformer(payload, previousValue, state)
-  const nextState: State = setState(state, computedPath, nextValue)
+  const nextState: State = setState(state, path, nextValue)
   return nextState
 }
 
