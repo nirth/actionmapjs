@@ -89,15 +89,17 @@ const filterItemsByGuard = (event: Event) => (mapItem: EventMapItem) => {
   `)
 }
 
-const resolveEventMapItem = (eventMap: EventMap, state: State, eventType: EventType) => ([
+const resolveEventMapItem = (eventMap: EventMap, state: State, event: Event) => ([
   path,
   _,
   transformer,
 ]: EventMapItem) => {
+  const computedPath = typeof path === 'function' ? path(event.payload) : path
+
   if (typeof transformer === 'function') {
-    return [path, transformer]
-  } else if (Array.isArray(transformer)) {
-    return [path, _createNextState(transformer, state[path], eventType)]
+    return [computedPath, transformer]
+  } else if (Array.isArray(transformer) && isDefined(state)) {
+    return [computedPath, _createNextState(transformer, state[computedPath], event.type)]
   }
 
   throw new Error(`
@@ -114,7 +116,7 @@ const _createNextState = (eventMap: EventMap, state: State, eventType: EventType
   if (Array.isArray(eventMap)) {
     const event: Event = {type: eventType, payload}
     const filteredByGuardMapItems = eventMap.filter(filterItemsByGuard(event))
-    const transformedMapItems = filteredByGuardMapItems.map(resolveEventMapItem(eventMap, state, eventType))
+    const transformedMapItems = filteredByGuardMapItems.map(resolveEventMapItem(eventMap, state, event))
 
     return processEventMap(transformedMapItems, state, event)
   }

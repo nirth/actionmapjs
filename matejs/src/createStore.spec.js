@@ -29,7 +29,7 @@ const stateFixture = () => ({
       age: null,
     },
   },
-  eventMap: [
+  appEventMap: [
     ['initialized', allowEventType('initialize'), mapInitialization],
     [
       'user',
@@ -61,14 +61,14 @@ const stateFixture = () => ({
 describe('createStore should', () => {
   it('exist', () => expect(createStore).to.be.a('function'))
 
-  it.only('create new state when dispatched series of events and use appropriate mappers', () => {
+  it('create new state when dispatched series of events and use appropriate mappers', () => {
     const {
       initialState,
-      eventMap,
+      appEventMap,
       events: {initialize, updateFirstName, updateLastName, updateAge},
     } = stateFixture()
 
-    const store = createStore(eventMap, initialState)
+    const store = createStore(appEventMap, initialState)
 
     store.dispatch(initialize())
     store.dispatch(updateAge(32))
@@ -93,11 +93,11 @@ describe('createStore should', () => {
   it('dispatch new events and allow subscriptions to receive updated state', () => {
     const {
       initialState,
-      eventMap,
+      appEventMap,
       events: {initialize, updateFirstName, updateLastName, updateAge},
     } = stateFixture()
 
-    const store = createStore(eventMap, initialState)
+    const store = createStore(appEventMap, initialState)
     const onNextState = spy()
 
     store.subscribe(onNextState)
@@ -134,11 +134,11 @@ describe('createStore should', () => {
   it('able to detect invalid event type in develop mode', () => {
     const {
       initialState,
-      eventMap,
+      appEventMap,
       events: {initialize, updateFirstName, updateLastName, updateAge},
     } = stateFixture()
 
-    const store = createStore(eventMap, initialState, [], {developmentMode: true})
+    const store = createStore(appEventMap, initialState, [], {developmentMode: true})
 
     expect(() => store.dispatch(null)).to.throw()
     expect(() => store.dispatch({})).to.throw()
@@ -149,11 +149,11 @@ describe('createStore should', () => {
   it('dispatch new events and allow subscribers to unsubscribe', () => {
     const {
       initialState,
-      eventMap,
+      appEventMap,
       events: {initialize, updateFirstName, updateLastName, updateAge},
     } = stateFixture()
 
-    const store = createStore(eventMap, initialState)
+    const store = createStore(appEventMap, initialState)
     const onNextState = spy()
 
     const subscription = store.subscribe(onNextState)
@@ -184,9 +184,9 @@ describe('Store should', () => {
   it('resolve path from payload', () => {
     const addPerson = (person) => person
     const normalizeBy = (field) => (payload) => payload[field].toLowerCase()
-    const eventMap = [['persons', true, [[normalizeBy('name'), allowEventType('addPerson'), addPerson]]]]
+    const personsEventMap = [['persons', true, [[normalizeBy('name'), allowEventType('addPerson'), addPerson]]]]
 
-    const store = createStore(eventMap, createPersonsStateFixture())
+    const store = createStore(personsEventMap, createPersonsStateFixture())
 
     store.dispatch({type: 'addPerson', payload: createPerson('Alice')})
     store.dispatch({type: 'addPerson', payload: createPerson('Bob')})
@@ -207,8 +207,8 @@ describe('Store should', () => {
 
     const petsEventMap = [[normalizeByPetName, allowEventType('addPet'), addPet]]
     const personsEventMap = [[normalizeByPersonName, allowEventType('addPerson'), addPerson]]
-    const eventMap = [['pets', true, petsEventMap], ['persons', true, personsEventMap]]
-    const store = createStore(eventMap, createPersonsAndPetStateFixture())
+    const personsAndPetsEventMap = [[() => 'pets', true, petsEventMap], [() => 'persons', true, personsEventMap]]
+    const store = createStore(personsAndPetsEventMap, createPersonsAndPetStateFixture())
 
     const {person: alice} = store.dispatch({type: 'addPerson', payload: {person: createPerson('Alice')}})
     expect(alice).to.deep.equal({name: 'Alice', pets: {}})
@@ -239,99 +239,35 @@ describe('Store should', () => {
     })
   })
 
-  xit('allow nested maps', () => {
+  it('allow nested maps', () => {
     const addPerson = ({person}) => person
     const addPet = ({pet}) => pet
     const normalizeByPersonName = ({person}) => person.name.toLowerCase()
     const normalizeByPetName = ({pet}) => pet.name.toLowerCase()
 
-    const petsEventMap = [[normalizeByPetName, allowEventType('addPet'), addPet]]
-    const personsEventMap = [
+    const petsEventMap = eventMap([normalizeByPetName, allowEventType('addPet'), addPet])
+
+    const personsEventMap = eventMap(
       [normalizeByPersonName, allowEventType('addPerson'), addPerson],
-      ['pets', true, petsEventMap],
-    ]
-    const eventMap = [['persons', true, personsEventMap]]
-    const store = createStore(eventMap, createPersonsAndPetStateFixture())
+      [normalizeByPersonName, allowEventType('addPet'), eventMap(['pets', true, petsEventMap])]
+    )
+    const personsAndPetsEventMap = eventMap([() => 'persons', true, personsEventMap])
+
+    const store = createStore(personsAndPetsEventMap, createPersonsStateFixture())
 
     const {person: alice} = store.dispatch({type: 'addPerson', payload: {person: createPerson('Alice')}})
     expect(alice).to.deep.equal({name: 'Alice', pets: {}})
     const {person: bob} = store.dispatch({type: 'addPerson', payload: {person: createPerson('Bob')}})
     expect(bob).to.deep.equal({name: 'Bob', pets: {}})
 
-    const {pet: albi} = store.dispatch({type: 'addPet', payload: {pet: createPet('Albi')}})
+    const {pet: albi} = store.dispatch({type: 'addPet', payload: {person: alice, pet: createPet('Albi')}})
     expect(albi).to.deep.equal({name: 'Albi'})
 
     expect(store.state).to.deep.equal({
       persons: {
         alice: {name: 'Alice', pets: {albi: {name: 'Albi'}}},
-        bob: {name: 'Bob', pets: {}},
-      },
-    })
-
-    expect(store.state).to.deep.equal({
-      persons: {
-        alice: {name: 'Alice', pets: {albi}},
         bob,
       },
     })
-  })
-
-  xit('XXX allow nested maps', () => {
-    const addPerson = ({person}) => person
-    const addPet = ({pet}) => pet
-    const normalizeByPerson = spy(({person}) => (person && person.name ? person.name.toLowerCase() : 'unknown'))
-    const normalizeByPetName = spy(({pet}) => (pet && pet.name ? pet.name.toLowerCase() : 'unknown'))
-
-    const personsPetsMap = [[normalizeByPetName, allowEventType('addPet'), addPet]]
-
-    const personsEventMap = [
-      [normalizeByPerson, allowEventType('addPerson'), addPerson],
-      [normalizeByPerson, allowEventType('addPet'), ['pets', true, personsPetsMap]],
-    ]
-
-    const eventMap = [['persons', true, personsEventMap]]
-
-    const store = createStore(eventMap, createPersonsStateFixture())
-
-    const alice = store.dispatch({type: 'addPerson', payload: {person: createPerson('Alice')}})
-    expect(normalizeByPerson).calledOnce()
-    expect(normalizeByPetName).not.to.have.been.called()
-    const bob = store.dispatch({type: 'addPerson', payload: {person: createPerson('Bob')}})
-    expect(normalizeByPerson).calledTwice()
-    expect(normalizeByPetName).not.to.have.been.called()
-    const clare = store.dispatch({type: 'addPerson', payload: {person: createPerson('Clare')}})
-    expect(normalizeByPerson).calledThrice()
-    expect(normalizeByPetName).not.to.have.been.called()
-
-    const albi = store.dispatch({type: 'addPet', payload: {person: alice, pet: createPet('Albi')}})
-    expect(normalizeByPetName).calledOnce()
-    expect(normalizeByPetName).calledWith({person: {name: 'Alice'}, pet: {name: 'Albi'}})
-    const bobik = store.dispatch({type: 'addPet', payload: {person: bob, pet: createPet('Bobik')}})
-    expect(normalizeByPetName).calledThrice()
-    const candi = store.dispatch({type: 'addPet', payload: {person: clare, pet: createPet('Candi')}})
-    expect(normalizeByPetName).calledTwice()
-
-    // expect(store.state).to.deep.equal({
-    //   persons: {
-    //     alice: {
-    //       name: 'Alice',
-    //       pets: {
-    //         albi: {name: 'Albi'},
-    //       },
-    //     },
-    //     bob: {
-    //       name: 'Bob',
-    //       pets: {
-    //         bobik: {name: 'Bobik'},
-    //       },
-    //     },
-    //     clare: {
-    //       name: 'Clare',
-    //       pets: {
-    //         candi: {name: 'Candi'},
-    //       },
-    //     },
-    //   },
-    // })
   })
 })
