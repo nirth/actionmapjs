@@ -2,7 +2,7 @@ import chai, {expect} from 'chai'
 import dirtyChai from 'dirty-chai'
 
 import {allowEventType} from './utils'
-import {createNextState, processEventMap} from './createNextState'
+import createNextState, {processEventMap} from './createNextState'
 import {createPersonsStateFixture, createPerson, createPet} from './test.fixtures.js'
 
 chai.use(dirtyChai)

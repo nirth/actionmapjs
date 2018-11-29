@@ -1,7 +1,7 @@
 // @flow
 import type {Event, EventMap, State, Store, Payload} from './types'
 import {Subject} from 'rxjs'
-import {createNextState} from './createNextState'
+import createNextState from './createNextState'
 
 const DEFAULT_OPTIONS = {
   developmentMode: false,
