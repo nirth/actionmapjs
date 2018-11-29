@@ -30,8 +30,8 @@ export type State = ?Object
 
 export type Transformer = (payload: Payload, currentValue: Value, state: ?State) => State
 
-export type EventMapItem = [Guard, Transformer] | EventMap
-export type EventMap = {[PathItem]: EventMapItem}
+export type EventMapItem = [PathItem, Guard, Transformer] | EventMap
+export type EventMap = EventMapItem[]
 
 export type PathResolver = (payload: Payload) => string
 export type PathItem = string | PathResolver
