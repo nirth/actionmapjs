@@ -17,8 +17,8 @@ import type {
 type PathTransformerPair = [PathItem, Transformer]
 
 const getState = (state: State, path: PathItem): State => {
-  console.log('getState:path:', path)
-  return state[path]
+  const result = state[path]
+  return result
 }
 
 const setState = (state: State, path: PathItem, value: Value): State => {

@@ -25,7 +25,6 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
     },
 
     dispatch: (event: Event): Payload => {
-      console.log('DISPATCH:', event.type, event.payload)
       if (traceMode) {
         console.log('Store.dispatch', event)
       }
