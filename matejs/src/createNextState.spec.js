@@ -3,6 +3,7 @@ import dirtyChai from 'dirty-chai'
 
 import {allowEventType} from './utils'
 import {createNextState, processEventMap} from './createNextState'
+import {createPersonsStateFixture, createPerson, createPet} from './test.fixtures.js'
 
 chai.use(dirtyChai)
 
@@ -139,4 +140,42 @@ describe('createNextState should', () => {
       user: {name: {firstName: 'Malika', lastName: 'Favre'}, age: 30},
     })
   })
+
+  // it('allow nested maps', () => {
+  //   const addPerson = ({person}) => person
+  //   const addPet = ({pet}) => pet
+  //   const normalizeByPersonName = ({person}) => person.name.toLowerCase()
+  //   const normalizeByPetName = ({pet}) => pet.name.toLowerCase()
+
+  //   const personsPetsMap = [[normalizeByPetName, allowEventType('addPet'), addPet]]
+  //   const personsEventMap = [
+  //     [normalizeByPersonName, allowEventType('addPerson'), addPerson],
+  //     // [normalizeByPersonName, true, personsPetsMap],
+  //   ]
+
+  //   const eventMap = [['persons', true, personsEventMap]]
+  //   // const store = createStore(eventMap, createPersonsStateFixture())
+  //   const initialState = createPersonsStateFixture()
+  //   const stateOne = createNextState(eventMap, initialState, [normalizeByPersonName], 'addPerson', {
+  //     person: createPerson('Alice'),
+  //   })
+
+  //   expect(stateOne).to.deep.equal({
+  //     persons: {
+  //       alice: createPerson('Alice'),
+  //     },
+  //   })
+
+  //   // store.dispatch({type: 'addPerson', payload: {person: createPerson('Alice')}})
+  //   // store.dispatch({type: 'addPerson', payload: {person: createPerson('Bob')}})
+  //   // store.dispatch({type: 'addPerson', payload: {person: createPerson('Clare')}})
+
+  //   // expect(store.state).to.deep.equal({
+  //   // persons: {
+  //   // alice: createPerson('Alice'),
+  //   // bob: createPerson('Bob'),
+  //   // clare: createPerson('Clare'),
+  //   // },
+  //   // })
+  // })
 })
