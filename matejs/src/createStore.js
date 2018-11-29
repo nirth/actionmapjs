@@ -23,7 +23,9 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
     subscribe: (onNext: any) => {
       return publisher.subscribe(onNext)
     },
-    dispatch: (event: Event): void => {
+
+    dispatch: (event: Event): Payload => {
+      console.log('DISPATCH:', event.type, event.payload)
       if (traceMode) {
         console.log('Store.dispatch', event)
       }
@@ -33,15 +35,17 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
           throw new Error(`Store.dispatch: Event.type has to be of Event type, instead got ${event.type}`)
         }
       }
-  
+
       const previousState: State = history[history.length - 1]
-  
+
       const nextState: State = createNextState(eventMap, previousState, [], event.type, event.payload)
-  
+
       history.push(nextState)
-  
+
       publisher.next(nextState)
-    }
+
+      return event.payload
+    },
   }
 
   return store
