@@ -17,6 +17,7 @@ import type {
 type PathTransformerPair = [PathItem, Transformer]
 
 const getState = (state: State, path: PathItem): State => {
+  console.log('getState:path:', path)
   return state[path]
 }
 
@@ -72,16 +73,15 @@ const filterItemsByGuard = (event: Event) => ([_, guard]: EventMapItem) => {
   return evaluateGuard(guard, event)
 }
 
-const resolveEventMapItem = (eventMap: EventMap, state: State, currentPath: PathItem[], eventType: EventType) => ([
+const resolveEventMapItem = (eventMap: EventMap, state: State, eventType: EventType) => ([
   path,
   _,
   transformer,
 ]: EventMapItem) => {
-  console.log('validateAndComputePathTransformerPair')
   if (typeof transformer === 'function') {
     return [path, transformer]
   } else if (Array.isArray(transformer)) {
-    return [path, _createNextState(transformer, state[path], currentPath.concat([path]), eventType)]
+    return [path, _createNextState(transformer, state[path], eventType)]
   }
 
   throw new Error(`
@@ -94,14 +94,11 @@ const resolveEventMapItem = (eventMap: EventMap, state: State, currentPath: Path
   `)
 }
 
-const _createNextState = (eventMap: EventMap, state: State, path: PathItem, eventType: EventType) => (
-  payload: Payload
-): State => {
+const _createNextState = (eventMap: EventMap, state: State, eventType: EventType) => (payload: Payload): State => {
   if (Array.isArray(eventMap)) {
     const event: Event = {type: eventType, payload}
     const filteredByGuardMapItems = eventMap.filter(filterItemsByGuard(event))
-    console.log('_createNextState:path', path)
-    const transformedMapItems = filteredByGuardMapItems.map(resolveEventMapItem(eventMap, state, path, eventType))
+    const transformedMapItems = filteredByGuardMapItems.map(resolveEventMapItem(eventMap, state, eventType))
 
     return processEventMap(transformedMapItems, state, event)
   }
@@ -119,6 +116,6 @@ const createNextState = (
   path: PathItem,
   eventType: EventType,
   payload: Payload
-): State => _createNextState(eventMap, state, path, eventType)(payload)
+): State => _createNextState(eventMap, state, eventType)(payload)
 
 export default createNextState
