@@ -16,6 +16,8 @@ import type {
 
 type PathTransformerPair = [PathItem, Transformer]
 
+const isDefined = (value) => value !== undefined && value !== null
+
 const getState = (state: State, path: PathItem): State => {
   const result = state[path]
   return result
