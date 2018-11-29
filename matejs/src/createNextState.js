@@ -92,20 +92,12 @@ const filterItemsByGuard = (event: Event) => ([_, guard]: EventMapItem) => {
   return evaluateGuard(guard, event)
 }
 
-const pickPathAndTransformer = ([
-  path: PathItem,
-  predicate: boolean,
-  transformer: Transformer,
-]): PathTransformerPair => {
-  return [path, transformer]
-}
-
-const validateAndComputePathTransformerPair = (
-  eventMap: EventMap,
-  state: State,
-  currentPath: PathItem[],
-  eventType: EventType
-) => ([path, transformer]: PathTransformerPair) => {
+const resolveEventMapItem = (eventMap: EventMap, state: State, currentPath: PathItem[], eventType: EventType) => ([
+  path,
+  _,
+  transformer,
+]: EventMapItem) => {
+  console.log('validateAndComputePathTransformerPair')
   if (typeof transformer === 'function') {
     return [path, transformer]
   } else if (Array.isArray(transformer)) {
@@ -128,12 +120,8 @@ const _createNextState = (eventMap: EventMap, state: State, path: PathItem, even
   if (Array.isArray(eventMap)) {
     const event: Event = {type: eventType, payload}
     const filteredByGuardMapItems = eventMap.filter(filterItemsByGuard(event))
-    const transformedMapItems = filteredByGuardMapItems.map(
-      compose(
-        validateAndComputePathTransformerPair(eventMap, state, path, eventType),
-        pickPathAndTransformer
-      )
-    )
+    console.log('_createNextState:path', path)
+    const transformedMapItems = filteredByGuardMapItems.map(resolveEventMapItem(eventMap, state, path, eventType))
 
     return processEventMap(transformedMapItems, state, event)
   }
@@ -145,10 +133,12 @@ const _createNextState = (eventMap: EventMap, state: State, path: PathItem, even
   `)
 }
 
-export const createNextState = (
+const createNextState = (
   eventMap: EventMap,
   state: State,
   path: PathItem,
   eventType: EventType,
   payload: Payload
 ): State => _createNextState(eventMap, state, path, eventType)(payload)
+
+export default createNextState
