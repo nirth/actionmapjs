@@ -60,7 +60,7 @@ const stateFixture = () => ({
 describe('createStore should', () => {
   it('exist', () => expect(createStore).to.be.a('function'))
 
-  it('create new state when dispatched series of events and use appropriate mappers', () => {
+  it.only('create new state when dispatched series of events and use appropriate mappers', () => {
     const {
       initialState,
       eventMap,
@@ -238,7 +238,7 @@ describe('Store should', () => {
     })
   })
 
-  it.only('allow nested maps', () => {
+  xit('allow nested maps', () => {
     const addPerson = ({person}) => person
     const addPet = ({pet}) => pet
     const normalizeByPersonName = ({person}) => person.name.toLowerCase()
