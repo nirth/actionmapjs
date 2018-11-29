@@ -44,30 +44,10 @@ const evaluateGuard = (guard: Guard, event: Event): boolean => {
 const computeNextState = (event: Event) => (state, [path, transformer]: PathTransformerPair): State => {
   const {payload} = event
   const computedPath = typeof path === 'function' ? path(payload) : path
-  const computedPathValid = typeof computedPath === 'string' && computedPath.length > 0
-  const stateValid = state !== null && state !== undefined
-
-  if (computedPathValid && stateValid) {
-    const previousValue: Value = getState(state, computedPath)
-    const nextValue: Value = transformer(payload, previousValue, state)
-    const nextState: State = setState(state, computedPath, nextValue)
-    return nextState
-  }
-
-  if (!(typeof computedPath === 'string' && computedPath.length > 0)) {
-    throw new Error(`
-      [internal] computeNextState
-      Problem with computing path. Path have to be specified as a string (if constant),
-      or as a function (if has to be resolved / computed every time). The result of
-      computation is invalid - it must be non empty string instead computedPath is ${computedPath}.
-      
-      There are two places to check:
-      
-       * Make sure that path is of valid type, it must be "string | (payload: Payload) => string",
-         instead received ${String(path)}
-       * Make sure that payload is what’s expected, received: ${String(payload)}
-    `)
-  }
+  const previousValue: Value = getState(state, computedPath)
+  const nextValue: Value = transformer(payload, previousValue, state)
+  const nextState: State = setState(state, computedPath, nextValue)
+  return nextState
 }
 
 export const processEventMap = (pathAndTransformers: PathTransformerPair[], state: State, event: Event): State => {
