@@ -3,14 +3,9 @@ import * as dirtyChai from 'dirty-chai'
 
 import {EventMapField} from './mate'
 import {eventMap, flatEventMapField} from './utils'
-// import {spy} from 'sinon'
-// import sinonChai from 'sinon-chai'
-// import sinonChaiInOrder from 'sinon-chai-in-order'
 
 const {expect} = chai
 chai.use(dirtyChai)
-// chai.use(sinonChai)
-// chai.use(sinonChaiInOrder)
 
 describe('Function createEventMap should', () => {
   it('exist', () => expect(eventMap).to.be.a('function'))

@@ -12,6 +12,9 @@ export type Event = {
 
 export type onNext = (event: Event) => void
 
+/**
+ * Store
+ */
 export interface Store {
   subscribe: (next: onNext) => Subscription
   dispatch: (event: Event) => Payload

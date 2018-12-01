@@ -1,6 +1,6 @@
 {
   "name": "@fyuld/mate",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -14,12 +14,15 @@
     "bdd": "node_modules/.bin/mocha ./**/*.spec.ts  --require ts-node/register",
     "test": "yarn format && yarn lint && yarn bdd",
     "bdd:ci": "node_modules/.bin/mocha ./**/*.spec.ts --require ts-node/register --reporter mocha-junit-reporter",
-    "ci": "yarn format && yarn lint && yarn bdd:ci"
+    "ci": "yarn format && yarn lint && yarn bdd:ci",
+    "clean": "rimraf lib",
+    "build": "yarn clean && rollup -c --config rollup.config.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
     "@types/sinon": "^5.0.7",
+    "@types/sinon-chai": "^3.2.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
@@ -27,6 +30,9 @@
     "mocha-junit-reporter": "^1.18.0",
     "prettier": "^1.15.3",
     "require-uncached": "^2.0.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.67.3",
+    "rollup-plugin-typescript2": "^0.18.0",
     "sinon": "^7.1.1",
     "sinon-chai": "^3.3.0",
     "ts-node": "^7.0.1",
@@ -35,7 +41,6 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "@types/sinon-chai": "^3.2.1",
     "ramda": "^0.26.1",
     "rxjs": "^6.3.3"
   }
