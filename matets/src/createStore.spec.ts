@@ -1,8 +1,6 @@
 import * as chai from 'chai'
 import * as dirtyChai from 'dirty-chai'
 import * as sinonChai from 'sinon-chai'
-// import sinonChaiInOrder from 'sinon-chai-in-order'
-import {spy} from 'sinon'
 
 import {allowEventType} from './utils'
 import createStore from './createStore'
@@ -13,7 +11,6 @@ import {EventMap, Transformer} from './mate'
 const {expect} = chai
 chai.use(dirtyChai)
 chai.use(sinonChai)
-// chai.use(sinonChaiInOrder)
 
 const mapInitialization = () => true
 const mapAge = (age) => age

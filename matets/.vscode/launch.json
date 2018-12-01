@@ -9,11 +9,13 @@
       "args": [
           "--require",
           "ts-node/register",
-          "${workspaceFolder}/src/**/*.spec.ts",
+          "--opts",
+          "${workspaceFolder}/.mocha.opts",
+          "${workspaceFolder}/**/*.spec.ts",
       ],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "protocol": "inspector"
+      "internalConsoleOptions": "openOnSessionStart",
+      "protocol": "auto"
   },
   ]
 }

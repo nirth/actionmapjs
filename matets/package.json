@@ -4,31 +4,38 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "node_modules/.bin/tslint -p tsconfig.json  --fix && echo \"Lint Passed\"",
     "format": "node_modules/.bin/prettier --write \"src/*.ts\" \"src/**/*.ts\"",
-    "bdd": "node_modules/.bin/mocha ./src/**/*.spec.ts  --require ts-node/register",
-    "test": "yarn format && yarn lint && yarn bdd"
+    "bdd": "node_modules/.bin/mocha ./**/*.spec.ts  --require ts-node/register",
+    "test": "yarn format && yarn lint && yarn bdd",
+    "bdd:ci": "node_modules/.bin/mocha ./**/*.spec.ts --require ts-node/register --reporter mocha-junit-reporter",
+    "ci": "yarn format && yarn lint && yarn bdd:ci"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
     "@types/sinon": "^5.0.7",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "dirty-chai": "^2.0.1",
     "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
     "prettier": "^1.15.3",
+    "require-uncached": "^2.0.0",
     "sinon": "^7.1.1",
     "sinon-chai": "^3.3.0",
-    "sinon-chai-in-order": "^0.1.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.1"
   },
   "dependencies": {
+    "@types/sinon-chai": "^3.2.1",
     "ramda": "^0.26.1",
     "rxjs": "^6.3.3"
   }
