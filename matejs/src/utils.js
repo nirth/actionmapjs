@@ -8,7 +8,7 @@ export const createSimpleEvent = (type: EventType, payload: Payload = null): Eve
 
 export const simpleEventFactory = (type: EventType) => (payload: Payload): Event => createSimpleEvent(type, payload)
 
-export const eventMap = (...items: EventMapItem): EventMap => [...items]
+export const eventMap = (...items: EventMapItem): EventMap => items
 
 export const trace = (target: any, index: any) => {
   console.log(`Trace ${index}: ${target}`)

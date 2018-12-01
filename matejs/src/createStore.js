@@ -37,7 +37,7 @@ export const createStore = (eventMap: EventMap, initialState: State, middleware:
 
       const previousState: State = history[history.length - 1]
 
-      const nextState: State = createNextState(eventMap, previousState, [], event.type, event.payload)
+      const nextState: State = createNextState(eventMap, previousState, event.type, event.payload)
 
       history.push(nextState)
 
