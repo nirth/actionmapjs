@@ -1,15 +1,13 @@
 import * as chai from 'chai'
-import * as dirtyChai from 'dirty-chai'
 import * as sinonChai from 'sinon-chai'
 
 import {allowEventType} from './utils'
 import createStore from './createStore'
 import {eventMap, flatEventMapField, deepEventMapField} from './utils'
 import {createPersonsStateFixture, createPersonsAndPetStateFixture, createPerson, createPet} from './test.fixtures'
-import {EventMap, Transformer} from './mate'
+import {EventMap, Transformer} from './datamodel'
 
 const {expect} = chai
-chai.use(dirtyChai)
 chai.use(sinonChai)
 
 const mapInitialization = () => true

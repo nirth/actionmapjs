@@ -1,7 +1,6 @@
-// @flow
-import {Subject, Subscription} from 'rxjs'
+import PubSub from './PubSub'
 import createNextState from './createNextState'
-import {Event, EventMap, Payload, State, Store} from './mate'
+import {Event, EventMap, Payload, State, Store, StateListener} from './datamodel'
 
 const DEFAULT_OPTIONS = {
   developmentMode: false,
@@ -10,7 +9,7 @@ const DEFAULT_OPTIONS = {
 
 const createStore = (eventMap: EventMap, initialState: State, middleware: any = [], options: any = null) => {
   const history = [initialState]
-  const publisher = new Subject()
+  const publisher = new PubSub<State>()
   const safeOptions = options === null ? DEFAULT_OPTIONS : options
   const developmentMode = safeOptions.developmentMode
   const traceMode = safeOptions.traceMode
@@ -20,8 +19,8 @@ const createStore = (eventMap: EventMap, initialState: State, middleware: any = 
       return history[history.length - 1]
     },
 
-    subscribe: (next: any): Subscription => {
-      return publisher.subscribe(next)
+    subscribe: (next: any): StateListener => {
+      return publisher.add(next)
     },
 
     dispatch: (event: Event): Payload => {
@@ -30,8 +29,7 @@ const createStore = (eventMap: EventMap, initialState: State, middleware: any = 
       const nextState: State = createNextState(eventMap, previousState, event.type, event.payload)
 
       history.push(nextState)
-
-      publisher.next(nextState)
+      publisher.emit(nextState)
 
       return event.payload
     },

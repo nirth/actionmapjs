@@ -1,4 +1,4 @@
-import {Event, EventMap, EventMapField, EventType, Payload, Path, Guard, Transformer} from './mate'
+import {Event, EventMap, EventMapField, EventType, Payload, Path, Guard, Transformer} from './datamodel'
 
 export const allowEventType = (allowedType: string) => (event: Event): boolean => event.type === allowedType
 

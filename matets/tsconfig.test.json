@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
-    "pretty": true,
     "sourceMap": true,
-    "declaration": true,
-    "target": "ES2017",
+    "target": "es5",
     "module": "commonjs",
     "noImplicitAny": false,
     "strict": true,
     "noImplicitReturns": false,
+    "declaration": true,
     "outDir": "dist",
-    "listEmittedFiles": true,
     "lib": ["es6"]
   },
-  "exclude": ["node_modules", "vendor_types", "dist", "**/*.spec.ts"],
+  "include": ["src", "datamodel.d.ts"],
+  "exclude": ["node_modules"],
   "typeRoots" : [
     "node_modules/@types",
     "vendor_types",
