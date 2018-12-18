@@ -1,14 +1,12 @@
 import * as chai from 'chai'
-import * as dirtyChai from 'dirty-chai'
 
 import {allowEventType, eventMap, flatEventMapField} from './utils'
 import createNextState from './createNextState'
 
 import {createPerson, createPersonsStateFixture, createPet, flatFixtures} from './test.fixtures'
-import {EventMap, State} from './mate'
+import {EventMap, State} from './datamodel'
 
 const {expect} = chai
-chai.use(dirtyChai)
 
 type StateAndMapFixture = {
   eventMap: EventMap

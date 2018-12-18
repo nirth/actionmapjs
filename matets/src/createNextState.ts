@@ -10,7 +10,7 @@ import {
   State,
   Transformer,
   Value,
-} from './mate'
+} from './datamodel'
 
 type PathAndTransformer = [ResolvedPath, Transformer]
 

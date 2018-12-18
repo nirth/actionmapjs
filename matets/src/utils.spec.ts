@@ -1,11 +1,9 @@
 import * as chai from 'chai'
-import * as dirtyChai from 'dirty-chai'
 
-import {EventMapField} from './mate'
+import {EventMapField} from './datamodel'
 import {eventMap, flatEventMapField} from './utils'
 
 const {expect} = chai
-chai.use(dirtyChai)
 
 describe('Function createEventMap should', () => {
   it('exist', () => expect(eventMap).to.be.a('function'))

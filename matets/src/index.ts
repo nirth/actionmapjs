@@ -1,4 +1,4 @@
-import {eventMap} from './utils'
+import {eventMap, allowEventType, flatEventMapField, deepEventMapField} from './utils'
 import createStore from './createStore'
 
-export {createStore, eventMap}
+export {createStore, eventMap, allowEventType, flatEventMapField, deepEventMapField}

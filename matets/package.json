@@ -1,22 +1,25 @@
 {
   "name": "@fyuld/mate",
-  "version": "0.5.1",
+  "description": "Mate - Front Controller library following Flux Pattern",
+  "author": "David Sergey Grigoryan <me@davidsergey.com> (https://davidsergey.com)",
   "license": "MIT",
+  "version": "0.5.5",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
+  "types": "datamodel.d.ts",
   "scripts": {
     "lint": "node_modules/.bin/tslint -p tsconfig.json  --fix && echo \"Lint Passed\"",
     "format": "node_modules/.bin/prettier --write \"src/*.ts\" \"src/**/*.ts\"",
-    "bdd": "node_modules/.bin/mocha ./**/*.spec.ts  --require ts-node/register",
+    "bdd": "node_modules/.bin/mocha ./**/*.spec.ts -P tsconfig.test.json  --require ts-node/register",
     "test": "yarn format && yarn lint && yarn bdd",
     "bdd:ci": "node_modules/.bin/mocha ./**/*.spec.ts --require ts-node/register --reporter mocha-junit-reporter",
     "ci": "yarn format && yarn lint && yarn bdd:ci",
     "clean": "rimraf lib",
-    "build": "yarn clean && rollup -c --config rollup.config.js"
+    "build": "yarn clean && tsc",
+    "build:min": "yarn clean && rollup -c --config rollup.config.js"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -40,8 +43,5 @@
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.1"
   },
-  "dependencies": {
-    "ramda": "^0.26.1",
-    "rxjs": "^6.3.3"
-  }
+  "dependencies": {}
 }

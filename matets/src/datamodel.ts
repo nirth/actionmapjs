@@ -1,5 +1,3 @@
-import {Subscription} from 'rxjs'
-
 export type Value = string | number | boolean | object
 
 export type EventType = string
@@ -10,13 +8,17 @@ export type Event = {
   payload: Payload
 }
 
+export type Listener<T> = (data: T) => void
+
+export type StateListener = Listener<State>
+
 export type onNext = (event: Event) => void
 
 /**
  * Store
  */
 export interface Store {
-  subscribe: (next: onNext) => Subscription
+  subscribe: (next: onNext) => any
   dispatch: (event: Event) => Payload
   state: State
 }
