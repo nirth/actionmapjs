@@ -1,4 +1,7 @@
-import {eventMap, allowEventType, flatEventMapField, deepEventMapField} from './utils'
 import createStore from './createStore'
+import {eventMap, allowEventType, flatEventMapField, deepEventMapField} from './utils'
+import {EventMap, Store} from './datamodel'
 
-export {createStore, eventMap, allowEventType, flatEventMapField, deepEventMapField}
+export {createStore, eventMap}
+export {allowEventType, flatEventMapField, deepEventMapField}
+export {EventMap, Store}

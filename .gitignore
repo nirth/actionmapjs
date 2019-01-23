@@ -17,11 +17,6 @@ coverage
 .nyc_output
 test-results.xml
 
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
 
 # node-waf configuration
 .lock-wscript
@@ -29,6 +24,7 @@ bower_components
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 lib/
+dist/
 
 # Dependency directories
 node_modules/

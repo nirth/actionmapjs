@@ -3,23 +3,28 @@
   "description": "Mate - Front Controller library following Flux Pattern",
   "author": "David Sergey Grigoryan <me@davidsergey.com> (https://davidsergey.com)",
   "license": "MIT",
-  "version": "0.5.5",
+  "version": "0.5.9",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
-  "types": "datamodel.d.ts",
+  "types": "index.d.ts",
   "scripts": {
+    "build:source": "tsc",
+    "build:types": "tsc --declaration --outDir . --emitDeclarationOnly",
     "lint": "node_modules/.bin/tslint -p tsconfig.json  --fix && echo \"Lint Passed\"",
     "format": "node_modules/.bin/prettier --write \"src/*.ts\" \"src/**/*.ts\"",
     "bdd": "node_modules/.bin/mocha ./**/*.spec.ts -P tsconfig.test.json  --require ts-node/register",
     "test": "yarn format && yarn lint && yarn bdd",
     "bdd:ci": "node_modules/.bin/mocha ./**/*.spec.ts --require ts-node/register --reporter mocha-junit-reporter",
     "ci": "yarn format && yarn lint && yarn bdd:ci",
-    "clean": "rimraf lib",
-    "build": "yarn clean && tsc",
-    "build:min": "yarn clean && rollup -c --config rollup.config.js"
+    "clean": "rimraf dist && rimraf *.d.ts",
+    "build": "yarn clean && yarn build:source && yarn build:types",
+    "build:min": "yarn clean && rollup -c --config rollup.config.js",
+    "prepublishOnly": "yarn build",
+    "postpublish": "rm -r *.d.ts dist"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
